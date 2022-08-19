@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.service;
 
+import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.model.Produto;
 import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,9 @@ public class ProdutoService {
     return produtoRepository.findAll();
   }
 
-  public Optional<Produto> findById(Integer id) {
-    return produtoRepository.findById(id);
+  public Produto findById(Integer id) {
+    return produtoRepository.findById(id).orElseThrow(() ->
+          new IdNotFoundException("Id: " + id + " não encontrado!"));
   }
 
   public Produto postProduto(Produto produto) {

@@ -16,8 +16,9 @@ public class CategoriaService {
   @Autowired
   private CategoriaRepository categoriaRepository;
 
-  public Optional<Categoria> findById(Integer id) {
-    return categoriaRepository.findById(id);
+  public Categoria findById(Integer id) {
+    return categoriaRepository.findById(id).orElseThrow(() -> new
+          IdNotFoundException("Id: " + id + " não encontrado!"));
   }
 
 

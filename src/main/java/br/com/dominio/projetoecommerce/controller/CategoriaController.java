@@ -30,8 +30,7 @@ public class CategoriaController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
-    return ResponseEntity.ok().body(categoriaService.findById(id).orElseThrow(
-          () -> new IdNotFoundException("Id não encontrado")));
+    return ResponseEntity.ok().body(categoriaService.findById(id));
   }
 
   @PostMapping

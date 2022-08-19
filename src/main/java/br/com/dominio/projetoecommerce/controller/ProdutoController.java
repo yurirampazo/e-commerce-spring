@@ -28,8 +28,7 @@ public class ProdutoController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Produto> findById(@PathVariable Integer id) {
-    return ResponseEntity.ok().body(produtoService.findById(id).orElseThrow(() ->
-          new IdNotFoundException("Id não encontrado")));
+    return ResponseEntity.ok().body(produtoService.findById(id));
   }
 
   @PostMapping
