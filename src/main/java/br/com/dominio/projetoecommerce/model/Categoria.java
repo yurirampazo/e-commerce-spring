@@ -1,6 +1,8 @@
 package br.com.dominio.projetoecommerce.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +30,7 @@ public class Categoria implements Serializable {
   @Size
   private String nome;
 
+  @JsonIgnore
   @ManyToMany(mappedBy = "categorias")
   private List<Produto> produtos = new ArrayList<>();
 

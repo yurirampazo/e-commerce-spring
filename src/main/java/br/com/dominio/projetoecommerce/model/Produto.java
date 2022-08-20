@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Produto {
+public class Produto implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
