@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
+import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,6 @@ public class CategoriaService {
     return categoriaRepository.findById(id).orElseThrow(() -> new
           IdNotFoundException("Id: " + id + " não encontrado!"));
   }
-
-
   public List<Categoria> findAll() {
     if (categoriaRepository.findAll().isEmpty()) {
       throw new EmptyStackException();
@@ -30,6 +29,12 @@ public class CategoriaService {
   }
 
   public Categoria post(Categoria categoria) {
-    return categoriaRepository.save(categoria);
+    boolean exists = categoriaRepository.findCategoriaByNomeContainingIgnoreCase(categoria.getNome()).isPresent();
+
+    if(!exists) {
+      return categoriaRepository.save(categoria);
+    } else {
+      throw new PostNotAllowedException("Objeto com mesmo nome já exite!");
+    }
   }
 }

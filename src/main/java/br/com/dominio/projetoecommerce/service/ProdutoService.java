@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
+import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.model.Produto;
 import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,12 @@ public class ProdutoService {
   }
 
   public Produto postProduto(Produto produto) {
-    return produtoRepository.save(produto);
+    boolean exists = produtoRepository.findProdutoByNomeContainingIgnoreCase(produto.getNome()).isPresent();
+
+    if(!exists) {
+      return produtoRepository.save(produto);
+    } else {
+      throw new PostNotAllowedException("Objeto com mesmo nome já exite!");
+    }
   }
-
-
 }

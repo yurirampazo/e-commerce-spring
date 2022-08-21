@@ -5,6 +5,7 @@ import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class CategoriaController {
 
   @PostMapping
   public ResponseEntity<Categoria> postCategoria(@RequestBody Categoria categoria) {
-    return ResponseEntity.status(201).body(categoria);
+    return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
   }
 
 }
