@@ -42,6 +42,9 @@ public class Cliente implements Serializable {
   @CollectionTable(name = "telefone")
   private Set<String> telefones = new HashSet<>();
 
+  @OneToMany(mappedBy = "cliente")
+  List<Pedido> pedidos = new ArrayList<>();
+
   public Cliente(Integer id, String nome, String email, String cpfCnpj, TipoCliente tipo) {
     this.id = id;
     this.nome = nome;
@@ -107,6 +110,13 @@ public class Cliente implements Serializable {
     }
   }
 
+  public void addPedido(Pedido pedido) {
+    pedido = pedidos.contains(pedido) ? null : pedido;
+
+    if (pedido != null) {
+      pedidos.add(pedido);
+    }
+  }
   public void addTelefone(String telefone) {
     telefone = telefones.contains(telefone) ? null : telefone;
 

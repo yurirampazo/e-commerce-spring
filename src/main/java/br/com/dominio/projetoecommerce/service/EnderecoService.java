@@ -20,7 +20,7 @@ public class EnderecoService {
 
   public Endereco findById(Integer id) {
     return enderecoRepository.findById(id).orElseThrow(() ->
-          new IdNotFoundException("Id: " + id + " não encontrado!"));
+          new IdNotFoundException(id));
   }
 
   public Endereco postEndereco(Endereco endereco) {

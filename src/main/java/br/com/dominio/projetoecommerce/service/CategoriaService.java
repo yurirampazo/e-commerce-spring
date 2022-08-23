@@ -19,7 +19,7 @@ public class CategoriaService {
 
   public Categoria findById(Integer id) {
     return categoriaRepository.findById(id).orElseThrow(() -> new
-          IdNotFoundException("Id: " + id + " não encontrado!"));
+          IdNotFoundException(id));
   }
   public List<Categoria> findAll() {
     if (categoriaRepository.findAll().isEmpty()) {

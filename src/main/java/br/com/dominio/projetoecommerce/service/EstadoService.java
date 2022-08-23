@@ -23,7 +23,7 @@ public class EstadoService {
 
   public Estado findById(Integer id) {
     return estadoRepository.findById(id).orElseThrow(() ->
-          new IdNotFoundException("Id não encontrado!"));
+          new IdNotFoundException(id));
   }
 
   public Estado postCidade(Estado estado) {

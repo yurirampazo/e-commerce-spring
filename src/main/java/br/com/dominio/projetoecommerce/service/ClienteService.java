@@ -2,7 +2,6 @@ package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.DocumentNumberAlreadyExistsException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
-import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class ClienteService {
 
   public Cliente findById(Integer id) {
     return clienteRepository.findById(id).orElseThrow(() ->
-          new IdNotFoundException("Id" + id + " não encontrado"));
+          new IdNotFoundException(id));
   }
 
   public Cliente findByCpfCnpj(String cpfCnpj) {
@@ -41,11 +40,7 @@ public class ClienteService {
     if(!exists) {
       return clienteRepository.save(cliente);
     } else {
-      throw new DocumentNumberAlreadyExistsException("O número de documento já existe!");
+      throw new DocumentNumberAlreadyExistsException();
     }
-
-
-
   }
-
 }

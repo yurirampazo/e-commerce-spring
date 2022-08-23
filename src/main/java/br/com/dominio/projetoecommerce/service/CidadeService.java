@@ -21,7 +21,7 @@ public class CidadeService {
 
   public Cidade findById(Integer id) {
     return cidadeRepository.findById(id).orElseThrow(() ->
-          new IdNotFoundException("Id não encontrado!"));
+          new IdNotFoundException(id));
   }
 
   public Cidade postCidade(Cidade cidade) {

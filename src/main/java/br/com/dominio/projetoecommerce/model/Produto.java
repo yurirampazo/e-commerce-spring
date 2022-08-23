@@ -1,6 +1,5 @@
 package br.com.dominio.projetoecommerce.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

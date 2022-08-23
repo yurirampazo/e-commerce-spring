@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class StandardError implements Serializable {
   private Integer status;
   private String message;
+  @JsonFormat(pattern = "dd-MM-yyyy | HH:mm")
   private LocalDateTime instant;
 
 }
