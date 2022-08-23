@@ -2,6 +2,8 @@ package br.com.dominio.projetoecommerce.model;
 
 
 import br.com.dominio.projetoecommerce.util.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,12 +34,13 @@ public class Cliente implements Serializable {
   private String cpfCnpj;
   private Integer tipo;
 
+  @JsonIgnoreProperties("cliente")
   @OneToMany(mappedBy = "cliente")
   private List<Endereco> enderecos = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "telefone")
-    private Set<String> telefones = new HashSet<>();
+  @ElementCollection
+  @CollectionTable(name = "telefone")
+  private Set<String> telefones = new HashSet<>();
 
   public Cliente(Integer id, String nome, String email, String cpfCnpj, TipoCliente tipo) {
     this.id = id;
@@ -64,7 +67,7 @@ public class Cliente implements Serializable {
     return cpfCnpj;
   }
 
-    public TipoCliente getTipo() {
+  public TipoCliente getTipo() {
     return TipoCliente.toEnum(tipo);
   }
 

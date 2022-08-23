@@ -1,5 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +36,7 @@ public class Cidade implements Serializable {
   @JoinColumn(name = "estado_id")
   private Estado estado;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "cidade")
   private List<Endereco> endereco = new ArrayList<>();
 

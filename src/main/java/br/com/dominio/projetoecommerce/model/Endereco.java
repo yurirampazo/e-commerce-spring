@@ -1,5 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,7 @@ public class Endereco implements Serializable {
   private String complemento;
   private String bairro;
   private String cep;
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "cliente_id")
   private Cliente cliente;
