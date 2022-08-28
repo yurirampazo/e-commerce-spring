@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,7 +36,8 @@ public class ItemPedido implements Serializable {
     return id.getPedido();
   }
 
-  public Produto getProduto() {
+  @JsonIgnore
+  Produto getProduto() {
     return id.getProduto();
   }
 

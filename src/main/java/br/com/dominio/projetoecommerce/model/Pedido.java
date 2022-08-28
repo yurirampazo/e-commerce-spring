@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,7 +39,7 @@ public class Pedido implements Serializable {
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
   private Pagamento pagamento;
 
-  @JsonIgnore
+  @JsonIgnoreProperties("cliente")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cliente")
   private Cliente cliente;
@@ -47,6 +48,7 @@ public class Pedido implements Serializable {
   @JoinColumn(name = "endereco_De_entrega_id")
   private Endereco enderecoDeEntrega;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "id.pedido")
   private Set<ItemPedido> itens = new HashSet<>();
 

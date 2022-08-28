@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,6 +44,7 @@ public class Produto implements Serializable {
   )
   private List<Categoria> categorias = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "id.produto")
   private Set<ItemPedido> itens = new HashSet<>();
 
@@ -80,7 +82,8 @@ public class Produto implements Serializable {
     itens.add(itemPedido);
   }
 
-  public List<Pedido> getPedidos() {
+  @JsonIgnore
+  List<Pedido> getPedidos() {
     List<Pedido> lista = new ArrayList<>();
     itens.forEach(x -> lista.add(x.getPedido()));
     return lista;
