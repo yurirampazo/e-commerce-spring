@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -40,6 +43,9 @@ public class Produto implements Serializable {
   )
   private List<Categoria> categorias = new ArrayList<>();
 
+  @OneToMany(mappedBy = "id.produto")
+  private Set<ItemPedido> itens = new HashSet<>();
+
   public Produto(Integer id, String nome, BigDecimal preco, Categoria categoria) {
     this.id = id;
     this.nome = nome;
@@ -52,7 +58,6 @@ public class Produto implements Serializable {
     this.nome = nome;
     this.preco = preco;
   }
-
   public void setId(Integer id) {
     this.id = id;
   }
@@ -66,13 +71,19 @@ public class Produto implements Serializable {
   }
 
   public void setCategorias(Categoria categoria) {
-
     Categoria c1 = categorias.contains(categoria) ? null : categoria;
-
     if (c1 != null) {
       categorias.add(categoria);
     }
+  }
+  public void addItens(ItemPedido itemPedido) {
+    itens.add(itemPedido);
+  }
 
+  public List<Pedido> getPedidos() {
+    List<Pedido> lista = new ArrayList<>();
+    itens.forEach(x -> lista.add(x.getPedido()));
+    return lista;
   }
 
   @Override
