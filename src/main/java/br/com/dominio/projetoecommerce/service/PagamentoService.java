@@ -24,7 +24,7 @@ public class PagamentoService {
           new IdNotFoundException(id));
   }
 
-  public <T extends Pagamento> T postPedido(T pagamento) {
+  public <T extends Pagamento> T postPagamaneto(T pagamento) {
     boolean exists = pagamentoRepository.findById(pagamento.getId()).isPresent();
 
     if(!exists) {

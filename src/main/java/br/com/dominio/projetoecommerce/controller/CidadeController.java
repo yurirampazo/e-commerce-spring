@@ -33,6 +33,7 @@ public class CidadeController {
 
   @PostMapping
   public ResponseEntity<Cidade> postCidade(@RequestBody Cidade cidade) {
+    cidadeService.postCidade(cidade);
     return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
   }
 

@@ -1,19 +1,6 @@
-#Configurar porta alternativa
 #server:
-#  port: "8081"
+# port: 8081
 
 spring:
   profiles:
-    active: "test"
-#  datasource:
-#    url: "jdbc:mysql://localhost:3306/e-commerce?createDatabaseIfNotExist=true&createTableIfNotExist=true"
-#    driverClassName: "com.mysql.cj.jdbc.Driver"
-#    username: "yuri"
-#    password: ""
-#  jpa:
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        ddl-auto: "update"
-#    database-platform: "org.hibernate.dialect.MySQL8Dialect"
+    active: test

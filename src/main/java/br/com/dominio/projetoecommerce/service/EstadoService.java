@@ -26,7 +26,7 @@ public class EstadoService {
           new IdNotFoundException(id));
   }
 
-  public Estado postCidade(Estado estado) {
+  public Estado postEstado(Estado estado) {
     boolean exists = estadoRepository.findEstadoByNomeContainingIgnoreCase(estado.getNome()).isPresent();
 
     if(!exists) {

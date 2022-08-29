@@ -31,7 +31,8 @@ public class PagamentoController {
     return ResponseEntity.ok().body(pagamentoService.findById(id));
   }
 
-  public ResponseEntity<? extends Pagamento> postPedido(@RequestBody Pagamento pagamento) {
+  public ResponseEntity<? extends Pagamento> postPagamento(@RequestBody Pagamento pagamento) {
+    pagamentoService.postPagamaneto(pagamento);
     return ResponseEntity.status(HttpStatus.CREATED).body(pagamento);
   }
 

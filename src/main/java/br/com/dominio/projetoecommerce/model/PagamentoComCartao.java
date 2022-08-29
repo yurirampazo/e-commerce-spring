@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Table(name = "pagamento_com_cartao")
 public class PagamentoComCartao extends Pagamento {
   private Integer numeroDeparcelas;
 

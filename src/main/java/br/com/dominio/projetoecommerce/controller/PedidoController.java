@@ -31,6 +31,7 @@ public class PedidoController {
   }
 
   public ResponseEntity<Pedido> postPedido(@RequestBody Pedido pedido) {
+    pedidoService.postPedido(pedido);
     return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
   }
 

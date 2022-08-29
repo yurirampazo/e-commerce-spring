@@ -33,6 +33,7 @@ public class EstadoController {
 
   @PostMapping
   public ResponseEntity<Estado> postEstado(@RequestBody Estado estado) {
+    estadoService.postEstado(estado);
     return ResponseEntity.status(HttpStatus.CREATED).body(estado);
   }
 

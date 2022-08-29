@@ -34,6 +34,7 @@ public class ClienteController {
 
   @PostMapping
   public ResponseEntity<Cliente> postCliente(@RequestBody Cliente cliente) {
+    clienteService.postCliente(cliente);
     return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
   }
 }

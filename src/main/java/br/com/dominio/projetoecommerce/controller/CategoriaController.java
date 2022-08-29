@@ -36,6 +36,7 @@ public class CategoriaController {
 
   @PostMapping
   public ResponseEntity<Categoria> postCategoria(@RequestBody Categoria categoria) {
+    categoriaService.post(categoria);
     return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
   }
 

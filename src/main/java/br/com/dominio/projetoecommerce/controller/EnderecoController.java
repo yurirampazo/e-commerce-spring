@@ -32,6 +32,7 @@ public class EnderecoController {
 
   @PostMapping
   public ResponseEntity<Endereco> postEndereco(@RequestBody Endereco endereco) {
+    enderecoService.postEndereco(endereco);
     return ResponseEntity.ok(enderecoService.postEndereco(endereco));
   }
 }

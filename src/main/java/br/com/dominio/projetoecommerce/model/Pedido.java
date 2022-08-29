@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "pedido")
 @Getter
 @NoArgsConstructor
 public class Pedido implements Serializable {

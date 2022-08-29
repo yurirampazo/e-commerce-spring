@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Table(name = "pagamento_com_boleto")
 public class PagamentoComBoleto extends Pagamento {
 
   @JsonFormat(pattern = "dd-MM-yyyy | HH:mm")

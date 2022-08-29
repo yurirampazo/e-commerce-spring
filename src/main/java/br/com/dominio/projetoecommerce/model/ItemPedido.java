@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@Table(name = "item_pedido")
 public class ItemPedido implements Serializable {
 
   @EmbeddedId
