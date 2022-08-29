@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class Categoria implements Serializable {
   private Integer id;
 
   @Size(max = 255)
+  @NotBlank
+  @NotNull
   private String nome;
 
   @JsonIgnore
@@ -49,8 +53,7 @@ public class Categoria implements Serializable {
     this.nome = nome;
   }
 
-  public void setProdutos(Produto produto) {
-
+  public void addProduto(Produto produto) {
     Produto p1 = new Produto();
     p1 = produtos.contains(produto) ? null : produto;
 

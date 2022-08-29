@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class StandardError implements Serializable {
   private Integer status;
   private String message;
-  @JsonFormat(pattern = "dd-MM-yyyy | HH:mm")
+  @JsonFormat(pattern = "dd-MM-yyyy, HH:mm")
   private LocalDateTime instant;
   private String uri;
 

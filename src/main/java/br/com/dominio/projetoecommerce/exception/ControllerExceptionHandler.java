@@ -20,7 +20,7 @@ public class ControllerExceptionHandler {
 
   @ExceptionHandler(PostNotAllowedException.class)
   public ResponseEntity<StandardError> postNotAllowed(PostNotAllowedException e, HttpServletRequest request) {
-    StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getCause().getMessage(), LocalDateTime.now(),
+    StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), LocalDateTime.now(),
           request.getRequestURI());
     return ResponseEntity.status(err.getStatus()).body(err);
   }

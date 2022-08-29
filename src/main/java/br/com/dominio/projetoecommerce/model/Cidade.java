@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,9 @@ public class Cidade implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @Size(max = 255)
+  @NotNull
+  @NotBlank
   private String nome;
 
   @ManyToOne
@@ -47,8 +53,6 @@ public class Cidade implements Serializable {
     this.nome = nome;
     this.estado = estado;
   }
-
-
 
   @Override
   public boolean equals(Object o) {

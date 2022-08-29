@@ -3,7 +3,6 @@ package br.com.dominio.projetoecommerce.model;
 
 import br.com.dominio.projetoecommerce.util.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -14,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -31,6 +31,7 @@ public abstract class Pagamento implements Serializable {
   @OneToOne
   @JoinColumn(name = "pedido_id")
   @MapsId
+  @NotNull
   private Pedido pedido;
 
   public Pagamento(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {

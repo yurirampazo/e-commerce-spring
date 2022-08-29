@@ -3,18 +3,18 @@ package br.com.dominio.projetoecommerce.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 @Table(name = "item_pedido")
 public class ItemPedido implements Serializable {
@@ -22,16 +22,23 @@ public class ItemPedido implements Serializable {
   @EmbeddedId
   private ItemPedidoPK id = new ItemPedidoPK();
 
+  @Min(0)
   private BigDecimal desconto;
+
+  @Min(1)
+  @NotNull
   private Integer quantidade;
+
+  @NotNull
+  @Min(0)
   private BigDecimal preco;
 
-  public ItemPedido(Pedido pedido, Produto produto, BigDecimal desconto, Integer quantidade, BigDecimal preco) {
+  public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
     id.setPedido(pedido);
     id.setProduto(produto);
-    this.desconto = desconto;
+    this.desconto = BigDecimal.valueOf(desconto);
     this.quantidade = quantidade;
-    this.preco = preco;
+    this.preco = BigDecimal.valueOf(preco);
   }
 
   public Pedido getPedido() {
@@ -41,6 +48,22 @@ public class ItemPedido implements Serializable {
   @JsonIgnore
   Produto getProduto() {
     return id.getProduto();
+  }
+
+  public void setId(ItemPedidoPK id) {
+    this.id = id;
+  }
+
+  public void setDesconto(Double desconto) {
+    this.desconto = BigDecimal.valueOf(desconto);
+  }
+
+  public void setQuantidade(Integer quantidade) {
+    this.quantidade = quantidade;
+  }
+
+  public void setPreco(Double preco) {
+    this.preco = BigDecimal.valueOf(preco);
   }
 
   @Override

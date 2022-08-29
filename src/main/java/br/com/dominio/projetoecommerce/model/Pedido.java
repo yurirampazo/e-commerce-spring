@@ -2,10 +2,8 @@ package br.com.dominio.projetoecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -35,13 +33,13 @@ public class Pedido implements Serializable {
   private Integer id;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  private LocalDateTime instante;
+  private final LocalDateTime instante = LocalDateTime.now();
 
   @JsonIgnore
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
   private Pagamento pagamento;
 
-  @JsonIgnoreProperties("cliente")
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cliente")
   private Cliente cliente;
@@ -54,9 +52,8 @@ public class Pedido implements Serializable {
   @OneToMany(mappedBy = "id.pedido")
   private Set<ItemPedido> itens = new HashSet<>();
 
-  public Pedido(Integer id, LocalDateTime instante, Cliente cliente, Endereco enderecoDeEntrega) {
+  public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega) {
     this.id = id;
-    this.instante = instante;
     this.cliente = cliente;
     this.enderecoDeEntrega = enderecoDeEntrega;
   }
@@ -64,11 +61,6 @@ public class Pedido implements Serializable {
   public void setId(Integer id) {
     this.id = id;
   }
-
-  public void setInstante(LocalDateTime instante) {
-    this.instante = instante;
-  }
-
   public void setPagamento(Pagamento pagamento) {
     this.pagamento = pagamento;
   }

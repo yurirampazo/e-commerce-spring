@@ -90,11 +90,11 @@ public class DBService {
       cidadeRepository.saveAll(Arrays.asList(c1, c2));
 
       Cliente cli1 = new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
-            "43808590815", TipoCliente.PESSOAFISICA);
+            "24860711050", TipoCliente.PESSOAFISICA);
       cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
       Cliente cli2 = new Cliente(null, "Silva Marcos", "marcos.silva@gmail.com",
-            "43808590816", TipoCliente.PESSOAFISICA);
+            "98813277091", TipoCliente.PESSOAFISICA);
       cli2.getTelefones().addAll(Arrays.asList("27363325", "93838395"));
 
       Endereco e1 = new Endereco(null, "Rua Flores", "300",
@@ -111,10 +111,8 @@ public class DBService {
       clienteRepository.saveAll(Arrays.asList(cli1, cli2));
       enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
-      Pedido ped1 = new Pedido(null, LocalDateTime.of(2022, Month.AUGUST,
-            22, 13, 45), cli1, e1);
-      Pedido ped2 = new Pedido(null, LocalDateTime.of(2022, Month.AUGUST,
-            15, 22, 10), cli2, e3);
+      Pedido ped1 = new Pedido(null, cli1, e1);
+      Pedido ped2 = new Pedido(null, cli2, e3);
 
       Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
       Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,
@@ -127,9 +125,9 @@ public class DBService {
       pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
       pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
 
-      ItemPedido ip1 = new ItemPedido(ped1, p1, BigDecimal.valueOf(0.00), 1, BigDecimal.valueOf(2000.00));
-      ItemPedido ip2 = new ItemPedido(ped1, p2, BigDecimal.valueOf(0.00), 2, BigDecimal.valueOf(80.00));
-      ItemPedido ip3 = new ItemPedido(ped2, p2, BigDecimal.valueOf(100.00), 1, BigDecimal.valueOf(800.00));
+      ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+      ItemPedido ip2 = new ItemPedido(ped1, p2, 0.00, 2, 80.00);
+      ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
 
       ped1.getItens().addAll(Arrays.asList(ip1, ip2));
       ped2.getItens().add(ip3);

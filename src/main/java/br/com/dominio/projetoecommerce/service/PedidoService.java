@@ -16,11 +16,11 @@ public class PedidoService {
   @Autowired
   private PedidoRepository pedidoRepository;
 
-  public List<Pedido> findAll() {
+  public List<Pedido> findAllPedidos() {
     return pedidoRepository.findAll();
   }
 
-  public Pedido findById(Integer id) {
+  public Pedido findPedidoById(Integer id) {
     return pedidoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + "do pedido não encontrado!"));
   }
@@ -34,4 +34,20 @@ public class PedidoService {
       throw new PostNotAllowedException("Pedido duplicado!");
     }
   }
+
+  public void putPedido(Integer id, Pedido pedidoAlterado) {
+    Pedido pedido = findPedidoById(id);
+    pedido.setCliente(pedidoAlterado.getCliente());
+    pedido.setPagamento(pedidoAlterado.getPagamento());
+    pedido.setEnderecoDeEntrega(pedidoAlterado.getEnderecoDeEntrega());
+
+    pedidoRepository.save(pedido);
+  }
+
+  public void deletePedido(Integer id) {
+    findPedidoById(id);
+    pedidoRepository.deleteById(id);
+  }
+
+
 }

@@ -14,6 +14,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,9 +37,13 @@ public class Produto implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @NotNull
+  @NotBlank
+  @Size(max = 255)
   private String nome;
 
   @Min(0)
+  @NotNull
   private BigDecimal preco;
 
   @ManyToMany
@@ -44,6 +52,8 @@ public class Produto implements Serializable {
         joinColumns = @JoinColumn(name = "produto_id"),
         inverseJoinColumns = @JoinColumn(name = "categoria_id")
   )
+  @NotNull
+  @NotEmpty
   private List<Categoria> categorias = new ArrayList<>();
 
   @JsonIgnore
@@ -74,7 +84,7 @@ public class Produto implements Serializable {
     this.preco = preco;
   }
 
-  public void setCategorias(Categoria categoria) {
+  public void addCategoria(Categoria categoria) {
     Categoria c1 = categorias.contains(categoria) ? null : categoria;
     if (c1 != null) {
       categorias.add(categoria);

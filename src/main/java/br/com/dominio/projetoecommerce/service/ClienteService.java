@@ -19,7 +19,7 @@ public class ClienteService {
     return clienteRepository.findAll();
   }
 
-  public Cliente findById(Integer id) {
+  public Cliente findClienteById(Integer id) {
     return clienteRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException(id));
   }
@@ -33,14 +33,29 @@ public class ClienteService {
     return clienteRepository.findClienteByEmailContainingIgnoreCase(email).orElseThrow(() ->
           new IdNotFoundException("E-mail:" + email + " não encontrado"));
   }
-
   public Cliente postCliente(Cliente cliente) {
     boolean exists = clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cliente.getCpfCnpj()).isPresent();
 
-    if(!exists) {
+    if (!exists) {
       return clienteRepository.save(cliente);
     } else {
       throw new DocumentNumberAlreadyExistsException();
     }
+  }
+
+  public void putCliente(Integer id, Cliente clienteAlterado) {
+    Cliente cliente = findClienteById(id);
+
+    cliente.setNome(clienteAlterado.getNome());
+    cliente.setCpfCnpj(clienteAlterado.getCpfCnpj());
+    cliente.setEmail(clienteAlterado.getEmail());
+    cliente.setTipo(clienteAlterado.getTipo());
+
+    clienteRepository.save(clienteAlterado);
+  }
+
+  public void deleteCliente(Integer id) {
+    findClienteById(id);
+    clienteRepository.deleteById(id);
   }
 }

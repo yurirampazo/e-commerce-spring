@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Getter
@@ -14,6 +15,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pagamento_com_cartao")
 public class PagamentoComCartao extends Pagamento {
+
+  @NotNull
   private Integer numeroDeparcelas;
 
   public PagamentoComCartao(Integer id, EstadoPagamento estadoPagamento, Pedido pedido, Integer numeroDeparcelas) {

@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Getter
@@ -16,10 +17,12 @@ import javax.persistence.Table;
 @Table(name = "pagamento_com_boleto")
 public class PagamentoComBoleto extends Pagamento {
 
-  @JsonFormat(pattern = "dd-MM-yyyy | HH:mm")
+  @JsonFormat(pattern = "dd-MM-yyyy, HH:mm")
+  @NotNull
   private LocalDateTime dataPagamento;
 
-  @JsonFormat(pattern = "dd-MM-yyyy | HH:mm")
+  @JsonFormat(pattern = "dd-MM-yyyy, HH:mm")
+  @NotNull
   private LocalDateTime dataVencimento;
 
   public PagamentoComBoleto(Integer id, EstadoPagamento estadoPagamento, Pedido pedido,
