@@ -27,7 +27,6 @@ public class PedidoDto implements Serializable {
   @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDateTime instante;
   private PagamentoDto pagamento;
-  private ClienteDto cliente;
   private EnderecoDto enderecoDeEntrega;
 
   public Integer getId() {
@@ -56,14 +55,6 @@ public class PedidoDto implements Serializable {
 
   public void setPagamento(PagamentoDto pagamento) {
     this.pagamento = pagamento;
-  }
-
-  public ClienteDto getCliente() {
-    return cliente;
-  }
-
-  public void setCliente(ClienteDto cliente) {
-    this.cliente = cliente;
   }
 
   public void setInstante(LocalDateTime instante) {

@@ -94,7 +94,6 @@ public class Pedido implements Serializable {
     dto.setInstante(model.getInstante());
 //    dto.setItens(model.getItens());
     //Adicionar items, problema é: Estão contidos na chave primária da tabela ManyToMany
-    // Soulução: se vira amigão! tu não quis virar programador?
     return dto;
   }
 

@@ -20,7 +20,7 @@ public class PagamentoDto {
 
   private Integer id;
   private Integer estadoPagamento;
-  private PedidoDto pedido;
+  private Pedido pedido;
   @JsonFormat(pattern = "dd-MM-yyyy, HH:mm")
   private LocalDateTime dataPagamento;
   @JsonFormat(pattern = "dd-MM-yyyy, HH:mm")
@@ -30,7 +30,7 @@ public class PagamentoDto {
   public PagamentoDto(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {
     this.id = id;
     this.estadoPagamento = estadoPagamento.getEstado();
-    this.pedido = Pedido.toDto(pedido);
+    this.pedido = pedido;
   }
 
   public Integer getId() {
@@ -49,11 +49,11 @@ public class PagamentoDto {
     this.estadoPagamento = estadoPagamento.getEstado();
   }
 
-  public PedidoDto getPedido() {
+  public Pedido getPedido() {
     return pedido;
   }
 
-  public void setPedido(PedidoDto pedido) {
+  public void setPedido(Pedido pedido) {
     this.pedido = pedido;
   }
 
@@ -93,7 +93,7 @@ public class PagamentoDto {
     if (dto.getDataPagamento() != null || dto.getDataVencimento() != null) {
       PagamentoComBoleto model = new PagamentoComBoleto();
       model.setId(dto.getId());
-      model.setPedido(PedidoDto.toModel(dto.getPedido()));
+      model.setPedido(dto.getPedido());
       model.setEstadoPagamento(dto.getEstadoPagamento());
       model.setDataVencimento(dto.getDataVencimento());
       model.setDataPagamento(dto.getDataPagamento());
@@ -101,7 +101,7 @@ public class PagamentoDto {
     } else if (dto.getNumeroDeparcelas() != null) {
       PagamentoComCartao model = new PagamentoComCartao();
       model.setId(dto.getId());
-      model.setPedido(PedidoDto.toModel(dto.getPedido()));
+      model.setPedido(dto.getPedido());
       model.setEstadoPagamento(dto.getEstadoPagamento());
       model.setNumeroDeparcelas(dto.getNumeroDeparcelas());
       return model;

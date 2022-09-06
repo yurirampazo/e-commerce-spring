@@ -5,6 +5,7 @@ import br.com.dominio.projetoecommerce.exception.MapToDtoException;
 import br.com.dominio.projetoecommerce.model.dto.PagamentoDto;
 import br.com.dominio.projetoecommerce.util.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -73,7 +74,7 @@ public abstract class Pagamento implements Serializable {
     PagamentoDto dto = new PagamentoDto();
     dto.setId(model.getId());
     dto.setEstadoPagamento(model.getEstadoPagamento());
-    dto.setPedido(Pedido.toDto(model.getPedido()));
+    dto.setPedido(model.getPedido());
 
     if(model instanceof PagamentoComCartao) {
       dto.setNumeroDeparcelas(((PagamentoComCartao) model).getNumeroDeparcelas());

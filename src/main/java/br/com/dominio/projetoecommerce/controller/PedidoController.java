@@ -27,7 +27,7 @@ public class PedidoController {
   private PedidoService pedidoService;
 
   @GetMapping("/page")
-  public ResponseEntity<Page<Pedido>> findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
+  public ResponseEntity<Page<PedidoDto>> findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                   @RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage,
                                                   @RequestParam(name = "direction", defaultValue = "ASC") String direction,
                                                   @RequestParam(name = "orderBy", defaultValue = "id") String orderBy) {
@@ -35,7 +35,7 @@ public class PedidoController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Pedido> findPedidoById(@PathVariable Integer id) {
+  public ResponseEntity<PedidoDto> findPedidoById(@PathVariable Integer id) {
     return ResponseEntity.ok().body(pedidoService.findPedidoById(id));
   }
 

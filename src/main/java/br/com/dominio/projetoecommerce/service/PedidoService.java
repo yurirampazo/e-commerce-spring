@@ -22,22 +22,21 @@ public class PedidoService {
   @Autowired
   private PedidoRepository pedidoRepository;
 
-  public Page<Pedido> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+  public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Pedido> list = pedidoRepository.findAll(pageRequest);
-    return list;
-//    try {
-//      return list.map(Pedido::toDto);
-//    } catch (EmptyStackException | IndexOutOfBoundsException e) {
-//      throw new PageNotFoundException(page);
-//    }
+    try {
+      return list.map(Pedido::toDto);
+    } catch (EmptyStackException | IndexOutOfBoundsException e) {
+      throw new PageNotFoundException(page);
+    }
   }
 
-  public Pedido findPedidoById(Integer id) {
-//    return Pedido.toDto(pedidoRepository.findById(id).orElseThrow(() ->
-//          new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
-    return pedidoRepository.findById(id).orElse(null);
+  public PedidoDto findPedidoById(Integer id) {
+    return Pedido.toDto(pedidoRepository.findById(id).orElseThrow(() ->
+          new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
+//    return pedidoRepository.findById(id).orElse(null);
   }
 
   public Pedido postPedido(Pedido pedido) {
