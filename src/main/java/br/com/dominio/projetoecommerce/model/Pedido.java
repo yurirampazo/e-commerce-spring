@@ -1,5 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
+import br.com.dominio.projetoecommerce.exception.MapToDtoException;
+import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -32,6 +34,8 @@ public class Pedido implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  private String clienteNome;
+
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private final LocalDateTime instante = LocalDateTime.now();
 
@@ -56,6 +60,7 @@ public class Pedido implements Serializable {
     this.id = id;
     this.cliente = cliente;
     this.enderecoDeEntrega = enderecoDeEntrega;
+    this.clienteNome = cliente.getNome();
   }
 
   public void setId(Integer id) {
@@ -75,6 +80,19 @@ public class Pedido implements Serializable {
 
   public void addItens(ItemPedido itemPedido) {
     itens.add(itemPedido);
+  }
+
+  public static PedidoDto toDto(Pedido model) {
+    if (model == null) {
+      throw new MapToDtoException();
+    }
+    PedidoDto dto = new PedidoDto();
+    dto.setId(model.getId());
+    dto.setPagamento(model.getPagamento());
+    dto.setEnderecoDeEntrega(model.getEnderecoDeEntrega());
+    dto.setClienteNome(model.getClienteNome());
+    dto.setItens(model.getItens());
+    return dto;
   }
 
   @Override

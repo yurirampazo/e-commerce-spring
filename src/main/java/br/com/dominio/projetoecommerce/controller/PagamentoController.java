@@ -53,7 +53,7 @@ public class PagamentoController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deletePagamento(@PathVariable Integer id) {
     pagamentoService.deletePagamento(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
 }

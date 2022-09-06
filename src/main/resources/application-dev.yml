@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/e-commerce?createDatabaseIfNotExist=true
     username: yuri
-    password:
+    password: 123456
   jpa:
     show-sql: true
     hibernate:

@@ -40,7 +40,6 @@ public class Endereco implements Serializable {
   @NotNull
   private String numero;
 
-  @Column(nullable = true)
   private String complemento;
 
   @NotBlank
@@ -60,7 +59,6 @@ public class Endereco implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "cidade_id")
-  @NotNull
   private Cidade cidade;
 
   @Override

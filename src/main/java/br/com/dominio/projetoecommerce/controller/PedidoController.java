@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.controller;
 
 import br.com.dominio.projetoecommerce.model.Pedido;
+import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,12 @@ public class PedidoController {
   private PedidoService pedidoService;
 
   @GetMapping
-  public ResponseEntity<List<Pedido>> findAll() {
+  public ResponseEntity<List<PedidoDto>> findAll() {
     return ResponseEntity.ok(pedidoService.findAllPedidos());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Pedido> findPedidoById(@PathVariable Integer id) {
+  public ResponseEntity<PedidoDto> findPedidoById(@PathVariable Integer id) {
     return ResponseEntity.ok().body(pedidoService.findPedidoById(id));
   }
 
@@ -50,7 +51,7 @@ public class PedidoController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deletePedido(@PathVariable Integer id) {
     pedidoService.deletePedido(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
 }

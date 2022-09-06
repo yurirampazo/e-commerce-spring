@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.controller;
 
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.model.Produto;
+import br.com.dominio.projetoecommerce.model.dto.ProdutoDto;
 import br.com.dominio.projetoecommerce.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,12 +27,12 @@ public class ProdutoController {
   private ProdutoService produtoService;
 
   @GetMapping
-  public ResponseEntity<List<Produto>> findAll() {
+  public ResponseEntity<List<ProdutoDto>> findAll() {
     return ResponseEntity.ok().body(produtoService.findAllProdutos());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Produto> findById(@PathVariable Integer id) {
+  public ResponseEntity<ProdutoDto> findById(@PathVariable Integer id) {
     return ResponseEntity.ok(produtoService.findProdutoById(id));
   }
 
@@ -51,7 +52,7 @@ public class ProdutoController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteProduto(@PathVariable Integer id) {
     produtoService.deleteProduto(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
 }

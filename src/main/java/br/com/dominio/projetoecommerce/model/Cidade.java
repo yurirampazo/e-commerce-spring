@@ -1,8 +1,8 @@
 package br.com.dominio.projetoecommerce.model;
 
+import br.com.dominio.projetoecommerce.exception.MapToDtoException;
+import br.com.dominio.projetoecommerce.model.dto.CidadeDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -52,6 +51,18 @@ public class Cidade implements Serializable {
     this.id = id;
     this.nome = nome;
     this.estado = estado;
+  }
+
+  public static CidadeDto toDto(Cidade model) {
+    if (model == null) {
+      throw new MapToDtoException();
+    }
+
+    CidadeDto dto = new CidadeDto();
+    dto.setId(model.getId());
+    dto.setNome(model.getNome());
+    dto.setEstado(model.getEstado());
+    return dto;
   }
 
   @Override

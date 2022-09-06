@@ -3,6 +3,7 @@ package br.com.dominio.projetoecommerce.controller;
 
 import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.model.Produto;
+import br.com.dominio.projetoecommerce.model.dto.CategoriaDto;
 import br.com.dominio.projetoecommerce.service.CategoriaService;
 import br.com.dominio.projetoecommerce.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/categorias")
 public class CategoriaController {
 
-  @Autowired
-  private CategoriaService categoriaService;
+ @Autowired
+ private CategoriaService categoriaService;
 
   @GetMapping
-  public ResponseEntity<List<Categoria>> listar() {
+  public ResponseEntity<List<CategoriaDto>> listar() {
     return ResponseEntity.ok().body(categoriaService.findAllCategorias());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
+  public ResponseEntity<CategoriaDto> findById(@PathVariable Integer id) {
     return ResponseEntity.ok().body(categoriaService.findCategoriaById(id));
   }
 
@@ -56,7 +57,7 @@ public class CategoriaController {
   @DeleteMapping("{id}")
   public ResponseEntity<Void> deletarCategoria(@PathVariable Integer id) {
     categoriaService.deleteCategoriaById(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
 }

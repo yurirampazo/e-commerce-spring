@@ -1,10 +1,11 @@
 package br.com.dominio.projetoecommerce.model;
 
 
+import br.com.dominio.projetoecommerce.exception.MapToDtoException;
+import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
 import br.com.dominio.projetoecommerce.util.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
-import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.CollectionTable;
@@ -17,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -138,12 +138,32 @@ public class Cliente implements Serializable {
       pedidos.add(pedido);
     }
   }
+
+  public List<Pedido> getPedidos() {
+    return pedidos;
+  }
+
   public void addTelefone(String telefone) {
     telefone = telefones.contains(telefone) ? null : telefone;
 
     if (telefone != null) {
       telefones.add(telefone);
     }
+  }
+
+  public static ClienteDto toDto(Cliente model) {
+    if (model == null) {
+      throw new MapToDtoException();
+    }
+    ClienteDto dto = new ClienteDto();
+    dto.setId(model.getId());
+    dto.setNome(model.getNome());
+    dto.setCpfCnpj(model.getCpfCnpj());
+    dto.setEmail(model.getEmail());
+    dto.setTipo(dto.getTipo());
+    dto.setTelefones(model.getTelefones());
+    dto.setPedidos(model.getPedidos());
+    return dto;
   }
 
   @Override

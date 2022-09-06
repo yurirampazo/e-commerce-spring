@@ -22,16 +22,16 @@ import java.util.Objects;
 @Table(name = "pagamento")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pagamento implements Serializable {
-
+  
   @Id
   private Integer id;
   private Integer estadoPagamento;
 
-  @JsonIgnore
   @OneToOne
   @JoinColumn(name = "pedido_id")
   @MapsId
   @NotNull
+  @JsonIgnore
   private Pedido pedido;
 
   public Pagamento(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {

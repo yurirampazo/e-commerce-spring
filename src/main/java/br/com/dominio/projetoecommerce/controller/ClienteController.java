@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.controller;
 
 import br.com.dominio.projetoecommerce.model.Cliente;
+import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
 import br.com.dominio.projetoecommerce.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,22 @@ public class ClienteController {
   private ClienteService clienteService;
 
   @GetMapping
-  public ResponseEntity<List<Cliente>> findAll() {
+  public ResponseEntity<List<ClienteDto>> findAll() {
     return ResponseEntity.ok(clienteService.findAll());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Cliente> findClienteById(@PathVariable Integer id) {
+  public ResponseEntity<ClienteDto> findClienteById(@PathVariable Integer id) {
     return ResponseEntity.ok(clienteService.findClienteById(id));
   }
 
-  @GetMapping("/{cpfCnpj}")
-  public ResponseEntity<Cliente> findClienteByCpfCnpj(@PathVariable String cpfCnpj) {
+  @GetMapping("/document/{cpfCnpj}")
+  public ResponseEntity<ClienteDto> findClienteByCpfCnpj(@PathVariable String cpfCnpj) {
     return ResponseEntity.ok(clienteService.findByCpfCnpj(cpfCnpj));
   }
 
-  @GetMapping("/{email}")
-  public ResponseEntity<Cliente> findClienteByEmail(@PathVariable String email) {
+  @GetMapping("/email/{email}")
+  public ResponseEntity<ClienteDto> findClienteByEmail(@PathVariable String email) {
     return ResponseEntity.ok(clienteService.findByEmail(email));
   }
 
@@ -60,6 +61,6 @@ public class ClienteController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteCliente(@PathVariable Integer id) {
     clienteService.deleteCliente(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

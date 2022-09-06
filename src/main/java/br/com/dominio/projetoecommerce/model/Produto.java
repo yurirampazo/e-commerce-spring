@@ -1,5 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
+import br.com.dominio.projetoecommerce.exception.MapToDtoException;
+import br.com.dominio.projetoecommerce.model.dto.ProdutoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -99,6 +101,19 @@ public class Produto implements Serializable {
     List<Pedido> lista = new ArrayList<>();
     itens.forEach(x -> lista.add(x.getPedido()));
     return lista;
+  }
+
+  public static ProdutoDto toDto(Produto model) {
+    if (model == null) {
+      throw new MapToDtoException();
+    }
+
+    ProdutoDto dto = new ProdutoDto();
+    dto.setId(model.getId());
+    dto.setNome(model.getNome());
+    dto.setPreco(model.getPreco());
+    dto.setCategorias(model.getCategorias());
+    return dto;
   }
 
   @Override
