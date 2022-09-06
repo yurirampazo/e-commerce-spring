@@ -1,4 +1,4 @@
-package br.com.dominio.projetoecommerce.exception;
+package br.com.dominio.projetoecommerce.exception.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

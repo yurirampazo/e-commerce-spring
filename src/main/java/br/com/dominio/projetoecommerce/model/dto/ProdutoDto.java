@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -41,7 +42,7 @@ public class ProdutoDto implements Serializable {
   private Integer id;
   private String nome;
   private BigDecimal preco;
-  private List<Categoria> categorias = new ArrayList<>();
+  private List<CategoriaDto> categorias = new ArrayList<>();
 
   public static Produto toModel(ProdutoDto dto) {
     if (dto == null) {
@@ -52,7 +53,7 @@ public class ProdutoDto implements Serializable {
     model.setId(dto.getId());
     model.setNome(dto.getNome());
     model.setPreco(dto.getPreco());
-    dto.categorias.forEach(model::addCategoria);
+    dto.setCategorias(model.getCategorias().stream().map(Categoria::toDto).collect(Collectors.toList()));
     return model;
   }
 

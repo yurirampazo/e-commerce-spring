@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
-@Getter
-@Setter
 @JsonInclude
 public class ClienteDto implements Serializable {
 
@@ -29,19 +27,68 @@ public class ClienteDto implements Serializable {
   private String cpfCnpj;
   private Integer tipo;
   private Set<String> telefones = new HashSet<>();
-  private List<Pedido> pedidos = new ArrayList<>();
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getCpfCnpj() {
+    return cpfCnpj;
+  }
+
+  public void setCpfCnpj(String cpfCnpj) {
+    this.cpfCnpj = cpfCnpj;
+  }
+
+  public TipoCliente getTipo() {
+    return TipoCliente.toEnum(tipo);
+  }
+
+  public void setTipo(TipoCliente tipo) {
+    this.tipo = tipo.getTipo();
+  }
+
+  public Set<String> getTelefones() {
+    return telefones;
+  }
+
+  public void setTelefones(Set<String> telefones) {
+    this.telefones = telefones;
+  }
+
   public static Cliente toModel(ClienteDto dto) {
     if (dto == null) {
       throw new MapToModelException();
     }
+
+
 
     Cliente model = new Cliente();
     model.setId(dto.getId());
     model.setNome(dto.getNome());
     model.setCpfCnpj(dto.getCpfCnpj());
     model.setEmail(dto.getEmail());
-    model.setTipo(TipoCliente.toEnum(dto.getTipo()));
+    model.setTipo(dto.getTipo());
     return model;
   }
-
 }

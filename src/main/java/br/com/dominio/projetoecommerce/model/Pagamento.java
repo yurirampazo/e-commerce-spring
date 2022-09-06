@@ -1,6 +1,8 @@
 package br.com.dominio.projetoecommerce.model;
 
 
+import br.com.dominio.projetoecommerce.exception.MapToDtoException;
+import br.com.dominio.projetoecommerce.model.dto.PagamentoDto;
 import br.com.dominio.projetoecommerce.util.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
@@ -62,6 +64,25 @@ public abstract class Pagamento implements Serializable {
 
   public void setPedido(Pedido pedido) {
     this.pedido = pedido;
+  }
+
+  public static PagamentoDto toDto(Pagamento model) {
+    if (model == null) {
+      throw new MapToDtoException();
+    }
+    PagamentoDto dto = new PagamentoDto();
+    dto.setId(model.getId());
+    dto.setEstadoPagamento(model.getEstadoPagamento());
+    dto.setPedido(Pedido.toDto(model.getPedido()));
+
+    if(model instanceof PagamentoComCartao) {
+      dto.setNumeroDeparcelas(((PagamentoComCartao) model).getNumeroDeparcelas());
+
+    } else if (model instanceof PagamentoComBoleto) {
+      dto.setDataPagamento(((PagamentoComBoleto) model).getDataPagamento());
+      dto.setDataVencimento(((PagamentoComBoleto) model).getDataVencimento());
+    }
+    return dto;
   }
 
   @Override

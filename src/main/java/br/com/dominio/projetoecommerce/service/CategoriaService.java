@@ -2,17 +2,19 @@ package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
+import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.model.dto.CategoriaDto;
 import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.EmptyStackException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
@@ -23,16 +25,19 @@ public class CategoriaService {
   @Autowired
   private ProdutoService produtoService;
 
+  public Page<CategoriaDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+    PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
+    try {
+      Page<Categoria> list = categoriaRepository.findAll(pageRequest);
+      return list.map(Categoria::toDto);
+    } catch (EmptyStackException | IndexOutOfBoundsException e) {
+      throw new PageNotFoundException(page);
+    }
+  }
+
   public CategoriaDto findCategoriaById(Integer id) {
     return Categoria.toDto(categoriaRepository.findById(id).orElseThrow(() -> new
           IdNotFoundException(id)));
-  }
-
-  public List<CategoriaDto> findAllCategorias() {
-    if (categoriaRepository.findAll().isEmpty()) {
-      throw new EmptyStackException();
-    }
-    return categoriaRepository.findAll().stream().map(Categoria::toDto).collect(Collectors.toList());
   }
 
   public Categoria postCategoria(Categoria categoria) {

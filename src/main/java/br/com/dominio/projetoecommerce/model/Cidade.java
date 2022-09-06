@@ -61,7 +61,7 @@ public class Cidade implements Serializable {
     CidadeDto dto = new CidadeDto();
     dto.setId(model.getId());
     dto.setNome(model.getNome());
-    dto.setEstado(model.getEstado());
+    dto.setEstado(Estado.toDto(model.getEstado()));
     return dto;
   }
 

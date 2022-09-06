@@ -1,5 +1,8 @@
 package br.com.dominio.projetoecommerce.model;
 
+import br.com.dominio.projetoecommerce.exception.MapToDtoException;
+import br.com.dominio.projetoecommerce.model.dto.CidadeDto;
+import br.com.dominio.projetoecommerce.model.dto.EnderecoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -60,6 +63,23 @@ public class Endereco implements Serializable {
   @ManyToOne
   @JoinColumn(name = "cidade_id")
   private Cidade cidade;
+
+  public static EnderecoDto toDto(Endereco model) {
+    if (model == null) {
+      throw new MapToDtoException();
+    }
+
+    EnderecoDto dto = new EnderecoDto();
+    dto.setId(model.getId());
+    dto.setCidade(Cidade.toDto(model.getCidade()));
+    dto.setLogradouro(model.getLogradouro());
+    dto.setNumero(model.getNumero());
+    dto.setBairro(model.getBairro());
+    dto.setCep(model.getCep());
+    dto.setCliente(Cliente.toDto(model.getCliente()));
+    dto.setComplemento(model.getComplemento());
+    return dto;
+  }
 
   @Override
   public boolean equals(Object o) {

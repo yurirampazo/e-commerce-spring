@@ -3,31 +3,31 @@ package br.com.dominio.projetoecommerce.model.dto;
 import br.com.dominio.projetoecommerce.exception.MapToModelException;
 import br.com.dominio.projetoecommerce.model.Cidade;
 import br.com.dominio.projetoecommerce.model.Estado;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class CidadeDto implements Serializable {
+public class EstadoDto implements Serializable {
 
   private Integer id;
   private String nome;
-  private EstadoDto estado;
 
-  public static Cidade toModel(CidadeDto dto) {
+  public static Estado toModel(EstadoDto dto) {
     if (dto == null) {
       throw new MapToModelException();
     }
 
-    Cidade model = new Cidade();
+    Estado model = new Estado();
     model.setId(dto.getId());
     model.setNome(dto.getNome());
-    model.setEstado(EstadoDto.toModel(dto.getEstado()));
     return model;
   }
 }

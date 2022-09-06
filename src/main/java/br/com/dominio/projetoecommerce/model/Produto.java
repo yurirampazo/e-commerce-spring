@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -112,7 +113,7 @@ public class Produto implements Serializable {
     dto.setId(model.getId());
     dto.setNome(model.getNome());
     dto.setPreco(model.getPreco());
-    dto.setCategorias(model.getCategorias());
+    dto.setCategorias(model.getCategorias().stream().map(Categoria::toDto).collect(Collectors.toList()));
     return dto;
   }
 

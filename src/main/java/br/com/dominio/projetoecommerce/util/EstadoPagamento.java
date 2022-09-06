@@ -1,5 +1,7 @@
 package br.com.dominio.projetoecommerce.util;
 
+import br.com.dominio.projetoecommerce.exception.MapEnumException;
+
 public enum EstadoPagamento {
   PENDENTE (1),
   QUITADO (2),
@@ -17,7 +19,7 @@ public enum EstadoPagamento {
 
   public static EstadoPagamento toEnum(Integer cod) {
     if (cod == null) {
-      return null;
+      throw new MapEnumException();
     }
 
     for (EstadoPagamento x : EstadoPagamento.values()) {

@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "cliente")
@@ -160,9 +161,8 @@ public class Cliente implements Serializable {
     dto.setNome(model.getNome());
     dto.setCpfCnpj(model.getCpfCnpj());
     dto.setEmail(model.getEmail());
-    dto.setTipo(dto.getTipo());
+    dto.setTipo(model.getTipo());
     dto.setTelefones(model.getTelefones());
-    dto.setPedidos(model.getPedidos());
     return dto;
   }
 

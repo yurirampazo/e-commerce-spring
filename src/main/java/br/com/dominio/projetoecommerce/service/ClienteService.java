@@ -3,6 +3,7 @@ package br.com.dominio.projetoecommerce.service;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.DocumentNumberAlreadyExistsException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
+import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,9 +28,14 @@ public class ClienteService {
     return clienteRepository.findAll().stream().map(Cliente::toDto).collect(Collectors.toList());
   }
 
-  public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-    PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-    return clienteRepository.findAll(pageRequest);
+  public Page<ClienteDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+    PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
+    Page<Cliente> list = clienteRepository.findAll(pageRequest);
+    try {
+      return list.map(Cliente::toDto);
+    } catch(EmptyStackException | IndexOutOfBoundsException e) {
+      throw  new PageNotFoundException(page);
+    }
   }
 
   public ClienteDto findClienteById(Integer id) {

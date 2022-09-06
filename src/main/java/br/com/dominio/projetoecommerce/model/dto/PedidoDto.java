@@ -25,32 +25,57 @@ public class PedidoDto implements Serializable {
   private Integer id;
   private String clienteNome;
   @JsonFormat(pattern = "yyyy-MM-dd")
-  private final LocalDateTime instante = LocalDateTime.now();
-  private Pagamento pagamento;
-  private Cliente cliente;
-  private Endereco enderecoDeEntrega;
-  private Set<ItemPedido> itens = new HashSet<>();
+  private LocalDateTime instante;
+  private PagamentoDto pagamento;
+  private ClienteDto cliente;
+  private EnderecoDto enderecoDeEntrega;
+
+  public Integer getId() {
+    return id;
+  }
 
   public void setId(Integer id) {
     this.id = id;
   }
+
+  public String getClienteNome() {
+    return clienteNome;
+  }
+
   public void setClienteNome(String clienteNome) {
     this.clienteNome = clienteNome;
   }
-  public void setPagamento(Pagamento pagamento) {
+
+  public LocalDateTime getInstante() {
+    return instante;
+  }
+
+  public PagamentoDto getPagamento() {
+    return pagamento;
+  }
+
+  public void setPagamento(PagamentoDto pagamento) {
     this.pagamento = pagamento;
   }
 
-  public void setCliente(Cliente cliente) {
+  public ClienteDto getCliente() {
+    return cliente;
+  }
+
+  public void setCliente(ClienteDto cliente) {
     this.cliente = cliente;
   }
 
-  public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
-    this.enderecoDeEntrega = enderecoDeEntrega;
+  public void setInstante(LocalDateTime instante) {
+    this.instante = instante;
   }
 
-  public void setItens(Set<ItemPedido> itens) {
-    this.itens = itens;
+  public EnderecoDto getEnderecoDeEntrega() {
+    return enderecoDeEntrega;
+  }
+
+  public void setEnderecoDeEntrega(EnderecoDto enderecoDeEntrega) {
+    this.enderecoDeEntrega = enderecoDeEntrega;
   }
 
   public static Pedido toModel(PedidoDto dto) {
@@ -60,8 +85,8 @@ public class PedidoDto implements Serializable {
 
     Pedido model = new Pedido();
     model.setId(dto.getId());
-    model.setEnderecoDeEntrega(dto.getEnderecoDeEntrega());
-    model.setPagamento(dto.getPagamento());
+    model.setEnderecoDeEntrega(EnderecoDto.toModel(dto.getEnderecoDeEntrega()));
+    model.setPagamento(PagamentoDto.toModel(dto.getPagamento()));
     return model;
   }
 }

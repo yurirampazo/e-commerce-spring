@@ -1,5 +1,7 @@
 package br.com.dominio.projetoecommerce.util;
 
+import br.com.dominio.projetoecommerce.exception.MapEnumException;
+
 public enum TipoCliente {
   PESSOAFISICA(1, "Pessoa Física"),
   PESSOAJURIDICA(2, "Pessoa Jurídica");
@@ -22,7 +24,7 @@ public enum TipoCliente {
 
   public static TipoCliente toEnum(Integer cod) {
     if (cod == null) {
-      return null;
+      throw new MapEnumException();
     }
 
     for (TipoCliente x : TipoCliente.values()) {

@@ -88,10 +88,13 @@ public class Pedido implements Serializable {
     }
     PedidoDto dto = new PedidoDto();
     dto.setId(model.getId());
-    dto.setPagamento(model.getPagamento());
-    dto.setEnderecoDeEntrega(model.getEnderecoDeEntrega());
+    dto.setPagamento(Pagamento.toDto(model.getPagamento()));
+    dto.setEnderecoDeEntrega(Endereco.toDto(model.getEnderecoDeEntrega()));
     dto.setClienteNome(model.getClienteNome());
-    dto.setItens(model.getItens());
+    dto.setInstante(model.getInstante());
+//    dto.setItens(model.getItens());
+    //Adicionar items, problema é: Estão contidos na chave primária da tabela ManyToMany
+    // Soulução: se vira amigão! tu não quis virar programador?
     return dto;
   }
 

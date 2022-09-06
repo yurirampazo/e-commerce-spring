@@ -2,17 +2,19 @@ package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
+import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.model.Produto;
 import br.com.dominio.projetoecommerce.model.dto.ProdutoDto;
 import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.EmptyStackException;
 
 @Service
 public class ProdutoService {
@@ -20,8 +22,14 @@ public class ProdutoService {
   @Autowired
   private ProdutoRepository produtoRepository;
 
-  public List<ProdutoDto> findAllProdutos() {
-    return produtoRepository.findAll().stream().map(Produto::toDto).collect(Collectors.toList());
+  public Page<ProdutoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+    PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
+    Page<Produto> list = produtoRepository.findAll(pageRequest);
+    try {
+      return list.map(Produto::toDto);
+    } catch(EmptyStackException | IndexOutOfBoundsException e) {
+      throw  new PageNotFoundException(page);
+    }
   }
 
   public ProdutoDto findProdutoById(Integer id) {
