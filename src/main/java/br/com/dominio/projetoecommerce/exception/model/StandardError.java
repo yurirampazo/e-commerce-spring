@@ -19,5 +19,4 @@ public class StandardError implements Serializable {
   @JsonFormat(pattern = "dd-MM-yyyy, HH:mm")
   private LocalDateTime instant;
   private String uri;
-
 }

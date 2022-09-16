@@ -8,14 +8,20 @@ import br.com.dominio.projetoecommerce.exception.MapToDtoException;
 import br.com.dominio.projetoecommerce.exception.MapToModelException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
+import br.com.dominio.projetoecommerce.exception.model.FieldMessage;
 import br.com.dominio.projetoecommerce.exception.model.StandardError;
+import br.com.dominio.projetoecommerce.exception.model.ValidationError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -74,6 +80,19 @@ public class ControllerExceptionHandler {
   public ResponseEntity<StandardError> dataIntegrity(MapEnumException e, HttpServletRequest request) {
     StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(),
           LocalDateTime.now(), request.getRequestURI());
+    return ResponseEntity.status(err.getStatus()).body(err);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
+    System.out.println("MethodArgumentNotValidException exception is called");
+    ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: ",
+          LocalDateTime.now(), request.getRequestURI());
+    System.out.println("Error message: " + e.getMessage());
+    for (FieldError x : e.getBindingResult().getFieldErrors()) {
+      err.addError(x.getField(), x.getDefaultMessage());
+    }
+    System.out.println("DTO List size: "+err.getList().size());
     return ResponseEntity.status(err.getStatus()).body(err);
   }
 }

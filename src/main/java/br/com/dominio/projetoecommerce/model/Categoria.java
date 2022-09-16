@@ -32,7 +32,7 @@ public class Categoria implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Size(max = 255)
+  @Size(max = 33, min = 5)
   @NotBlank
   @NotNull
   private String nome;
