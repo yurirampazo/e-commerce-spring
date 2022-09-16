@@ -85,14 +85,15 @@ public class ControllerExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
-    System.out.println("MethodArgumentNotValidException exception is called");
     ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: ",
           LocalDateTime.now(), request.getRequestURI());
-    System.out.println("Error message: " + e.getMessage());
-    for (FieldError x : e.getBindingResult().getFieldErrors()) {
-      err.addError(x.getField(), x.getDefaultMessage());
-    }
-    System.out.println("DTO List size: "+err.getList().size());
+
+//    for (FieldError x : e.getBindingResult().getFieldErrors()) {
+//      err.addError(x.getField(), x.getDefaultMessage());
+//    }
+
+    e.getBindingResult().getFieldErrors().forEach(x -> err.addError(x.getField(), x.getDefaultMessage()));
+
     return ResponseEntity.status(err.getStatus()).body(err);
   }
 }

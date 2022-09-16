@@ -8,17 +8,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @AllArgsConstructor
 public class ValidationError extends StandardError implements Serializable {
 
-  private List<FieldMessage> list = new ArrayList<>();
+  private List<FieldMessage> errors = new ArrayList<>();
 
   public ValidationError(Integer status, String message, LocalDateTime instant, String uri) {
     super(status, message, instant, uri);
   }
 
   public void addError(String nome, String message) {
-    list.add(new FieldMessage(nome, message));
+    errors.add(new FieldMessage(nome, message));
+  }
+
+  public List<FieldMessage> getErrors() {
+    return errors;
   }
 }
