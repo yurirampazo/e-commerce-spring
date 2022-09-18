@@ -11,6 +11,7 @@ import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.exception.model.FieldMessage;
 import br.com.dominio.projetoecommerce.exception.model.StandardError;
 import br.com.dominio.projetoecommerce.exception.model.ValidationError;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -93,6 +94,25 @@ public class ControllerExceptionHandler {
 //    }
 
     e.getBindingResult().getFieldErrors().forEach(x -> err.addError(x.getField(), x.getDefaultMessage()));
+
+    return ResponseEntity.status(err.getStatus()).body(err);
+
+  }
+
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<StandardError> validation(IllegalStateException e, HttpServletRequest request) {
+    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: " +
+          e.getCause().getMessage(),
+          LocalDateTime.now(), request.getRequestURI());
+
+    return ResponseEntity.status(err.getStatus()).body(err);
+  }
+
+  @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+  public ResponseEntity<StandardError> validation(InvalidDataAccessApiUsageException e, HttpServletRequest request) {
+    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: " +
+          e.getCause().getMessage(),
+          LocalDateTime.now(), request.getRequestURI());
 
     return ResponseEntity.status(err.getStatus()).body(err);
   }

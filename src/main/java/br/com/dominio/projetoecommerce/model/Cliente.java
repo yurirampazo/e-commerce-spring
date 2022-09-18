@@ -6,8 +6,8 @@ import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
 import br.com.dominio.projetoecommerce.util.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "cliente")
@@ -50,14 +49,13 @@ public class Cliente implements Serializable {
 
   @NotBlank
   @NotNull
-  @CPF
   private String cpfCnpj;
 
   @NotNull
   private Integer tipo;
 
   @JsonIgnoreProperties("cliente")
-  @OneToMany(mappedBy = "cliente")
+  @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
   @NotNull
   private List<Endereco> enderecos = new ArrayList<>();
 
@@ -98,6 +96,10 @@ public class Cliente implements Serializable {
 
   public List<Endereco> getEnderecos() {
     return enderecos;
+  }
+
+  public void addTelefones(Set<String> telefones) {
+    this.telefones.addAll(telefones);
   }
 
   public Set<String> getTelefones() {
@@ -163,6 +165,7 @@ public class Cliente implements Serializable {
     dto.setEmail(model.getEmail());
     dto.setTipo(model.getTipo());
     dto.setTelefones(model.getTelefones());
+    model.getEnderecos().forEach(dto::addEndereco);
     return dto;
   }
 

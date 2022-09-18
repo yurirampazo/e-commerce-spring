@@ -1,4 +1,4 @@
-package br.com.dominio.projetoecommerce.controller;
+package br.com.dominio.projetoecommerce.exception.controller;
 
 import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
@@ -50,9 +50,10 @@ public class ClienteController {
   }
 
   @PostMapping
-  public ResponseEntity<Cliente> postCliente(@Valid @RequestBody Cliente cliente) {
+  public ResponseEntity<ClienteDto> postCliente(@Valid @RequestBody ClienteDto cliente) {
     clienteService.postCliente(cliente);
-    return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+    ClienteDto clienteDto = clienteService.findByCpfCnpj(cliente.getCpfCnpj());
+    return ResponseEntity.status(HttpStatus.CREATED).body(clienteDto);
   }
 
   @PutMapping("/{id}")

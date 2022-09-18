@@ -1,4 +1,4 @@
-package br.com.dominio.projetoecommerce.controller;
+package br.com.dominio.projetoecommerce.exception.controller;
 
 import br.com.dominio.projetoecommerce.model.Pagamento;
 import br.com.dominio.projetoecommerce.service.PagamentoService;

@@ -5,6 +5,7 @@ import br.com.dominio.projetoecommerce.exception.MapToModelException;
 import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.Endereco;
 import br.com.dominio.projetoecommerce.model.Pedido;
+import br.com.dominio.projetoecommerce.service.validation.ClienteInsert;
 import br.com.dominio.projetoecommerce.util.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 @NoArgsConstructor
 @JsonInclude
+@ClienteInsert
 public class ClienteDto implements Serializable {
 
   private Integer id;
@@ -26,6 +28,7 @@ public class ClienteDto implements Serializable {
   private String email;
   private String cpfCnpj;
   private Integer tipo;
+  private List<Endereco> enderecos = new ArrayList<>();
   private Set<String> telefones = new HashSet<>();
 
   public Integer getId() {
@@ -76,11 +79,23 @@ public class ClienteDto implements Serializable {
     this.telefones = telefones;
   }
 
+  public List<Endereco> getEnderecos() {
+    return enderecos;
+  }
+
+  public void addEndereco(Endereco endereco) {
+    if (endereco != null) {
+      boolean contains = this.getEnderecos().contains(endereco);
+      if (!contains) {
+        this.enderecos.add(endereco);
+      }
+    }
+  }
+
   public static Cliente toModel(ClienteDto dto) {
     if (dto == null) {
       throw new MapToModelException();
     }
-
 
 
     Cliente model = new Cliente();
@@ -89,6 +104,8 @@ public class ClienteDto implements Serializable {
     model.setCpfCnpj(dto.getCpfCnpj());
     model.setEmail(dto.getEmail());
     model.setTipo(dto.getTipo());
+    dto.getEnderecos().forEach(model::addEndereco);
+    model.addTelefones(dto.getTelefones());
     return model;
   }
 }
