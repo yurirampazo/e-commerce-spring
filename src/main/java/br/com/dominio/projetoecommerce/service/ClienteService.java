@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.DocumentNumberAlreadyExistsException;
+import br.com.dominio.projetoecommerce.exception.EmailNotFoundException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.model.Cliente;
@@ -56,8 +57,8 @@ public class ClienteService {
   }
 
   public ClienteDto findByEmail(String email) {
-    return Cliente.toDto(clienteRepository.findClienteByEmailContainingIgnoreCase(email).orElseThrow(() ->
-          new IdNotFoundException("E-mail:" + email + " não encontrado")));
+    return Cliente.toDto(clienteRepository.findClienteByEmailContainingIgnoreCase(email)
+          .orElseThrow(EmailNotFoundException::new));
   }
 
   @Transactional

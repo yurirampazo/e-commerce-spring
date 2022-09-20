@@ -2,37 +2,42 @@ package br.com.dominio.projetoecommerce.exception.handler;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.DocumentNumberAlreadyExistsException;
+import br.com.dominio.projetoecommerce.exception.EmailNotFoundException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.MapEnumException;
 import br.com.dominio.projetoecommerce.exception.MapToDtoException;
 import br.com.dominio.projetoecommerce.exception.MapToModelException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
-import br.com.dominio.projetoecommerce.exception.model.FieldMessage;
 import br.com.dominio.projetoecommerce.exception.model.StandardError;
 import br.com.dominio.projetoecommerce.exception.model.ValidationError;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
   @ExceptionHandler(IdNotFoundException.class)
-  public ResponseEntity<StandardError> objectNotFound(IdNotFoundException e, HttpServletRequest request) {
+  public ResponseEntity<StandardError> idtNotFound(IdNotFoundException e, HttpServletRequest request) {
     StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(),
           LocalDateTime.now(), request.getRequestURI());
     return ResponseEntity.status(err.getStatus()).body(err);
   }
+
+  @ExceptionHandler(EmailNotFoundException.class)
+  public ResponseEntity<StandardError> emailNotFound(EmailNotFoundException e, HttpServletRequest request) {
+    StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(),
+          LocalDateTime.now(), request.getRequestURI());
+    return ResponseEntity.status(err.getStatus()).body(err);
+  }
+
 
   @ExceptionHandler(PostNotAllowedException.class)
   public ResponseEntity<StandardError> postNotAllowed(PostNotAllowedException e, HttpServletRequest request) {
