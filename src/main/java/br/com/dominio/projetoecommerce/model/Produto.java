@@ -1,7 +1,5 @@
 package br.com.dominio.projetoecommerce.model;
 
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.model.dto.ProdutoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -27,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Entity
@@ -40,13 +34,13 @@ public class Produto implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @NotNull
-  @NotBlank
+//  @NotNull
+//  @NotBlank
   @Size(max = 255)
   private String nome;
 
   @Min(0)
-  @NotNull
+//  @NotNull
   private BigDecimal preco;
 
   @ManyToMany
@@ -55,8 +49,8 @@ public class Produto implements Serializable {
         joinColumns = @JoinColumn(name = "produto_id"),
         inverseJoinColumns = @JoinColumn(name = "categoria_id")
   )
-  @NotNull
-  @NotEmpty
+//  @NotNull
+//  @NotEmpty
   private List<Categoria> categorias = new ArrayList<>();
 
   @JsonIgnore
@@ -103,20 +97,6 @@ public class Produto implements Serializable {
     itens.forEach(x -> lista.add(x.getPedido()));
     return lista;
   }
-
-  public static ProdutoDto toDto(Produto model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-
-    ProdutoDto dto = new ProdutoDto();
-    dto.setId(model.getId());
-    dto.setNome(model.getNome());
-    dto.setPreco(model.getPreco());
-    dto.setCategorias(model.getCategorias().stream().map(Categoria::toDto).collect(Collectors.toList()));
-    return dto;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

@@ -1,8 +1,10 @@
 package br.com.dominio.projetoecommerce.exception.controller;
 
+import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.model.Produto;
 import br.com.dominio.projetoecommerce.model.dto.ProdutoDto;
 import br.com.dominio.projetoecommerce.service.ProdutoService;
+import br.com.dominio.projetoecommerce.util.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
@@ -27,12 +30,30 @@ public class ProdutoController {
   private ProdutoService produtoService;
 
   @GetMapping("/page")
-  public ResponseEntity<Page<ProdutoDto>> findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                   @RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage,
-                                                   @RequestParam(name = "orderBy", defaultValue = "nome") String orderBy,
-                                                   @RequestParam(name = "direction", defaultValue = "ASC") String direction) {
+  public ResponseEntity<Page<ProdutoDto>> findPage(@RequestParam(name = "page", defaultValue = "0")
+                                                     Integer page,
+                                                   @RequestParam(name = "linesPerPage", defaultValue = "24")
+                                                   Integer linesPerPage,
+                                                   @RequestParam(name = "orderBy", defaultValue = "nome")
+                                                     String orderBy,
+                                                   @RequestParam(name = "direction", defaultValue = "ASC")
+                                                     String direction) {
 
     return ResponseEntity.ok().body(produtoService.findPage(page, linesPerPage, direction, orderBy));
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<Page<ProdutoDto>> search(@RequestParam(name = "nome", defaultValue = "") String nome,
+                                                 @RequestParam(name = "categorias", defaultValue = "") String categorias,
+                                                 @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(name = "linesPerPage", defaultValue = "24")
+                                                   Integer linesPerPage,
+                                                 @RequestParam(name = "orderBy", defaultValue = "nome") String orderBy,
+                                                 @RequestParam(name = "direction", defaultValue = "ASC") String direction) {
+
+    List<Integer> list = URL.decodeIntList(categorias);
+    String nomeDecoded = URL.decodeParam(nome);
+    return ResponseEntity.ok().body(produtoService.search(nomeDecoded, list, page, linesPerPage, direction, orderBy));
   }
 
   @GetMapping("/{id}")

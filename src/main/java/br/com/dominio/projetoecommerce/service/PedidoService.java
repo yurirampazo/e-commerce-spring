@@ -4,6 +4,7 @@ import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
+import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.model.Pedido;
 import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
@@ -27,14 +28,14 @@ public class PedidoService {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Pedido> list = pedidoRepository.findAll(pageRequest);
     try {
-      return list.map(Pedido::toDto);
+      return list.map(PedidoMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public PedidoDto findPedidoById(Integer id) {
-    return Pedido.toDto(pedidoRepository.findById(id).orElseThrow(() ->
+    return PedidoMapper.toDto(pedidoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
 //    return pedidoRepository.findById(id).orElse(null);
   }

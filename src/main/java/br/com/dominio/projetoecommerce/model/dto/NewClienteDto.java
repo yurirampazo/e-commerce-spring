@@ -1,9 +1,9 @@
 package br.com.dominio.projetoecommerce.model.dto;
 
 
+import br.com.dominio.projetoecommerce.enums.TipoCliente;
 import br.com.dominio.projetoecommerce.model.Endereco;
 import br.com.dominio.projetoecommerce.service.validation.ClienteInsert;
-import br.com.dominio.projetoecommerce.util.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.NoArgsConstructor;
 

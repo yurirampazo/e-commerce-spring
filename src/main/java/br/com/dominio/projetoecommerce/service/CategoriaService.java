@@ -4,6 +4,7 @@ import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
+import br.com.dominio.projetoecommerce.mapper.CategoriaMapper;
 import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.model.dto.CategoriaDto;
 import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.EmptyStackException;
 
@@ -23,21 +23,19 @@ public class CategoriaService {
   @Autowired
   private CategoriaRepository categoriaRepository;
 
-  @Autowired
-  private ProdutoService produtoService;
 
   public Page<CategoriaDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     try {
       Page<Categoria> list = categoriaRepository.findAll(pageRequest);
-      return list.map(Categoria::toDto);
+      return list.map(CategoriaMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public CategoriaDto findCategoriaById(Integer id) {
-    return Categoria.toDto(categoriaRepository.findById(id).orElseThrow(() -> new
+    return CategoriaMapper.toDto(categoriaRepository.findById(id).orElseThrow(() -> new
           IdNotFoundException(id)));
   }
 
@@ -52,7 +50,7 @@ public class CategoriaService {
   }
 
   public void putCategoria(Categoria categoriaAlterada, Integer id) {
-    Categoria categoria = CategoriaDto.toModel(findCategoriaById(id));
+    Categoria categoria = CategoriaMapper.toModel(findCategoriaById(id));
     categoria.setNome(categoriaAlterada.getNome());
     categoriaRepository.save(categoria);
   }

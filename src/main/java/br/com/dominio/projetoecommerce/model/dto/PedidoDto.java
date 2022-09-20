@@ -1,11 +1,5 @@
 package br.com.dominio.projetoecommerce.model.dto;
 
-import br.com.dominio.projetoecommerce.exception.MapToModelException;
-import br.com.dominio.projetoecommerce.model.Cliente;
-import br.com.dominio.projetoecommerce.model.Endereco;
-import br.com.dominio.projetoecommerce.model.ItemPedido;
-import br.com.dominio.projetoecommerce.model.Pagamento;
-import br.com.dominio.projetoecommerce.model.Pedido;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -13,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Getter
@@ -67,17 +59,5 @@ public class PedidoDto implements Serializable {
 
   public void setEnderecoDeEntrega(EnderecoDto enderecoDeEntrega) {
     this.enderecoDeEntrega = enderecoDeEntrega;
-  }
-
-  public static Pedido toModel(PedidoDto dto) {
-    if (dto == null) {
-      throw new MapToModelException();
-    }
-
-    Pedido model = new Pedido();
-    model.setId(dto.getId());
-    model.setEnderecoDeEntrega(EnderecoDto.toModel(dto.getEnderecoDeEntrega()));
-    model.setPagamento(PagamentoDto.toModel(dto.getPagamento()));
-    return model;
   }
 }

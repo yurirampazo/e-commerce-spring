@@ -1,7 +1,5 @@
 package br.com.dominio.projetoecommerce.model;
 
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.model.dto.EstadoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,18 +57,6 @@ public class Estado implements Serializable {
       cidades.add(cidade);
     }
    }
-
-   public static EstadoDto toDto(Estado model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-
-    EstadoDto dto = new EstadoDto();
-    dto.setId(model.getId());
-    dto.setNome(model.getNome());
-    return dto;
-   }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

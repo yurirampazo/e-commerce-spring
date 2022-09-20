@@ -3,9 +3,8 @@ package br.com.dominio.projetoecommerce.model;
 
 import br.com.dominio.projetoecommerce.exception.MapToDtoException;
 import br.com.dominio.projetoecommerce.model.dto.PagamentoDto;
-import br.com.dominio.projetoecommerce.util.EstadoPagamento;
+import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -66,26 +65,6 @@ public abstract class Pagamento implements Serializable {
   public void setPedido(Pedido pedido) {
     this.pedido = pedido;
   }
-
-  public static PagamentoDto toDto(Pagamento model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-    PagamentoDto dto = new PagamentoDto();
-    dto.setId(model.getId());
-    dto.setEstadoPagamento(model.getEstadoPagamento());
-    dto.setPedido(model.getPedido());
-
-    if(model instanceof PagamentoComCartao) {
-      dto.setNumeroDeparcelas(((PagamentoComCartao) model).getNumeroDeparcelas());
-
-    } else if (model instanceof PagamentoComBoleto) {
-      dto.setDataPagamento(((PagamentoComBoleto) model).getDataPagamento());
-      dto.setDataVencimento(((PagamentoComBoleto) model).getDataVencimento());
-    }
-    return dto;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

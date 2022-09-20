@@ -1,7 +1,5 @@
 package br.com.dominio.projetoecommerce.model;
 
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -81,22 +79,6 @@ public class Pedido implements Serializable {
   public void addItens(ItemPedido itemPedido) {
     itens.add(itemPedido);
   }
-
-  public static PedidoDto toDto(Pedido model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-    PedidoDto dto = new PedidoDto();
-    dto.setId(model.getId());
-    dto.setPagamento(Pagamento.toDto(model.getPagamento()));
-    dto.setEnderecoDeEntrega(Endereco.toDto(model.getEnderecoDeEntrega()));
-    dto.setClienteNome(model.getClienteNome());
-    dto.setInstante(model.getInstante());
-//    dto.setItens(model.getItens());
-    //Adicionar items, problema é: Estão contidos na chave primária da tabela ManyToMany
-    return dto;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

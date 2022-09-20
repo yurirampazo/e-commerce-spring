@@ -1,13 +1,9 @@
 package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
-import br.com.dominio.projetoecommerce.exception.DocumentNotFoundException;
-import br.com.dominio.projetoecommerce.exception.DocumentNumberAlreadyExistsException;
-import br.com.dominio.projetoecommerce.exception.EmailNotFoundException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.exception.MapToModelException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
+import br.com.dominio.projetoecommerce.mapper.ClienteMapper;
 import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.Endereco;
 import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
@@ -36,35 +32,35 @@ public class ClienteService {
   private EnderecoRepository enderecoRepository;
 
   public List<NewClienteDto> findAll() {
-    return clienteRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
+    return clienteRepository.findAll().stream().map(ClienteMapper::toDto).collect(Collectors.toList());
   }
 
   public Page<NewClienteDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Cliente> list = clienteRepository.findAll(pageRequest);
     try {
-      return list.map(this::toDto);
+      return list.map(ClienteMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public NewClienteDto findClienteById(Integer id) {
-    return toDto(clienteRepository.findById(id).orElseThrow(() ->
+    return ClienteMapper.toDto(clienteRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException(id)));
   }
 
   public NewClienteDto findByCpfCnpj(String cpfCnpj) {
-      return toDto(clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cpfCnpj));
+      return ClienteMapper.toDto(clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cpfCnpj));
   }
 
   public NewClienteDto findByEmail(String email) {
-    return toDto(clienteRepository.findClienteByEmailContainingIgnoreCase(email));
+    return ClienteMapper.toDto(clienteRepository.findClienteByEmailContainingIgnoreCase(email));
   }
 
   @Transactional
   public NewClienteDto postCliente(NewClienteDto cliente) {
-    Cliente c1 = clienteRepository.save(toModel(cliente));
+    Cliente c1 = clienteRepository.save(ClienteMapper.toModel(cliente));
     for (Endereco x : cliente.getEnderecos()) {
       x.setCliente(c1);
     }
@@ -91,34 +87,5 @@ public class ClienteService {
     } catch (DataIntegrityViolationException e) {
       throw new DataIntegrityException();
     }
-  }
-
-  public NewClienteDto toDto(Cliente model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-    NewClienteDto dto = new NewClienteDto();
-    dto.setNome(model.getNome());
-    dto.setCpfCnpj(model.getCpfCnpj());
-    dto.setEmail(model.getEmail());
-    dto.setTipo(model.getTipo());
-    dto.setTelefones(model.getTelefones());
-    model.getEnderecos().forEach(dto::addEndereco);
-    return dto;
-  }
-
-  public Cliente toModel(NewClienteDto dto) {
-    if (dto == null) {
-      throw new MapToModelException();
-    }
-
-    Cliente model = new Cliente();
-    model.setNome(dto.getNome());
-    model.setCpfCnpj(dto.getCpfCnpj());
-    model.setEmail(dto.getEmail());
-    model.setTipo(dto.getTipo());
-    dto.getEnderecos().forEach(model::addEndereco);
-    model.addTelefones(dto.getTelefones());
-    return model;
   }
 }

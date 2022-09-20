@@ -1,8 +1,6 @@
 package br.com.dominio.projetoecommerce.model;
 
 
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.model.dto.CategoriaDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,17 +60,6 @@ public class Categoria implements Serializable {
       produtos.add(produto);
     }
   }
-
-  public static CategoriaDto toDto(Categoria model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-    CategoriaDto dto = new CategoriaDto();
-    dto.setId(model.getId());
-    dto.setNome(model.getNome());
-    return dto;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

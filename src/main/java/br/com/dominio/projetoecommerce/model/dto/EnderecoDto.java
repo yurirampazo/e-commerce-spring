@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.model.dto;
 
 import br.com.dominio.projetoecommerce.exception.MapToModelException;
+import br.com.dominio.projetoecommerce.mapper.CidadeMapper;
 import br.com.dominio.projetoecommerce.model.Endereco;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -53,18 +54,4 @@ public class EnderecoDto {
     this.cidade = cidade;
   }
 
-  public static Endereco toModel(EnderecoDto dto) {
-    if (dto == null) {
-      throw new MapToModelException();
-    }
-
-    Endereco model = new Endereco();
-    model.setId(dto.getId());
-    model.setBairro(dto.getBairro());
-    model.setCep(dto.getCep());
-    model.setCidade(CidadeDto.toModel(dto.getCidade()));
-    model.setNumero(dto.getNumero());
-    model.setComplemento(dto.getComplemento());
-    return model;
-  }
 }

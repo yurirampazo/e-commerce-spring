@@ -19,15 +19,4 @@ public class EstadoDto implements Serializable {
 
   private Integer id;
   private String nome;
-
-  public static Estado toModel(EstadoDto dto) {
-    if (dto == null) {
-      throw new MapToModelException();
-    }
-
-    Estado model = new Estado();
-    model.setId(dto.getId());
-    model.setNome(dto.getNome());
-    return model;
-  }
 }

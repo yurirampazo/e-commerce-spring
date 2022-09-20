@@ -18,16 +18,4 @@ public class CidadeDto implements Serializable {
   private Integer id;
   private String nome;
   private EstadoDto estado;
-
-  public static Cidade toModel(CidadeDto dto) {
-    if (dto == null) {
-      throw new MapToModelException();
-    }
-
-    Cidade model = new Cidade();
-    model.setId(dto.getId());
-    model.setNome(dto.getNome());
-    model.setEstado(EstadoDto.toModel(dto.getEstado()));
-    return model;
-  }
 }

@@ -20,8 +20,8 @@ import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
 import br.com.dominio.projetoecommerce.repository.PagamentoRepository;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
 import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
-import br.com.dominio.projetoecommerce.util.EstadoPagamento;
-import br.com.dominio.projetoecommerce.util.TipoCliente;
+import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
+import br.com.dominio.projetoecommerce.enums.TipoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
 
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.model.dto.NewClienteDto;
-import br.com.dominio.projetoecommerce.util.TipoCliente;
+import br.com.dominio.projetoecommerce.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
 

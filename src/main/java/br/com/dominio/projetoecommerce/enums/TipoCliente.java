@@ -1,4 +1,4 @@
-package br.com.dominio.projetoecommerce.util;
+package br.com.dominio.projetoecommerce.enums;
 
 import br.com.dominio.projetoecommerce.exception.MapEnumException;
 

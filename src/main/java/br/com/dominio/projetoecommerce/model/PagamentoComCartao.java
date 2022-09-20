@@ -1,6 +1,6 @@
 package br.com.dominio.projetoecommerce.model;
 
-import br.com.dominio.projetoecommerce.util.EstadoPagamento;
+import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

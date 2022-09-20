@@ -1,12 +1,11 @@
 package br.com.dominio.projetoecommerce.service.validation;
 
-import br.com.dominio.projetoecommerce.exception.EmailNotFoundException;
 import br.com.dominio.projetoecommerce.exception.model.FieldMessage;
 import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.dto.NewClienteDto;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
 import br.com.dominio.projetoecommerce.service.validation.utils.BR;
-import br.com.dominio.projetoecommerce.util.TipoCliente;
+import br.com.dominio.projetoecommerce.enums.TipoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
