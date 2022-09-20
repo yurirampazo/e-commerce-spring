@@ -76,7 +76,6 @@ public class Endereco implements Serializable {
     dto.setNumero(model.getNumero());
     dto.setBairro(model.getBairro());
     dto.setCep(model.getCep());
-    dto.setCliente(Cliente.toDto(model.getCliente()));
     dto.setComplemento(model.getComplemento());
     return dto;
   }

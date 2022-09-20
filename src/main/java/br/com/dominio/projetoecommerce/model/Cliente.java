@@ -2,7 +2,7 @@ package br.com.dominio.projetoecommerce.model;
 
 
 import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
+import br.com.dominio.projetoecommerce.model.dto.NewClienteDto;
 import br.com.dominio.projetoecommerce.util.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
@@ -17,8 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,27 +34,17 @@ public class Cliente implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @NotBlank
-  @NotNull
   @Size(max = 255)
   private String nome;
 
-  @NotBlank
-  @NotNull
   @Email
   @Size(max = 300)
   private String email;
-
-  @NotBlank
-  @NotNull
   private String cpfCnpj;
-
-  @NotNull
   private Integer tipo;
 
   @JsonIgnoreProperties("cliente")
   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-  @NotNull
   private List<Endereco> enderecos = new ArrayList<>();
 
   @ElementCollection
@@ -153,22 +141,6 @@ public class Cliente implements Serializable {
       telefones.add(telefone);
     }
   }
-
-  public static ClienteDto toDto(Cliente model) {
-    if (model == null) {
-      throw new MapToDtoException();
-    }
-    ClienteDto dto = new ClienteDto();
-    dto.setId(model.getId());
-    dto.setNome(model.getNome());
-    dto.setCpfCnpj(model.getCpfCnpj());
-    dto.setEmail(model.getEmail());
-    dto.setTipo(model.getTipo());
-    dto.setTelefones(model.getTelefones());
-    model.getEnderecos().forEach(dto::addEndereco);
-    return dto;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

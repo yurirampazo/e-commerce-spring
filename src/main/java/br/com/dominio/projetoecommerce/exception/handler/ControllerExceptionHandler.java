@@ -1,8 +1,8 @@
 package br.com.dominio.projetoecommerce.exception.handler;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
+import br.com.dominio.projetoecommerce.exception.DocumentNotFoundException;
 import br.com.dominio.projetoecommerce.exception.DocumentNumberAlreadyExistsException;
-import br.com.dominio.projetoecommerce.exception.EmailNotFoundException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.MapEnumException;
 import br.com.dominio.projetoecommerce.exception.MapToDtoException;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -31,14 +32,12 @@ public class ControllerExceptionHandler {
     return ResponseEntity.status(err.getStatus()).body(err);
   }
 
-  @ExceptionHandler(EmailNotFoundException.class)
-  public ResponseEntity<StandardError> emailNotFound(EmailNotFoundException e, HttpServletRequest request) {
+  @ExceptionHandler(DocumentNotFoundException.class)
+  public ResponseEntity<StandardError> idtNotFound(DocumentNotFoundException e, HttpServletRequest request) {
     StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(),
           LocalDateTime.now(), request.getRequestURI());
     return ResponseEntity.status(err.getStatus()).body(err);
   }
-
-
   @ExceptionHandler(PostNotAllowedException.class)
   public ResponseEntity<StandardError> postNotAllowed(PostNotAllowedException e, HttpServletRequest request) {
     StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(),
@@ -82,12 +81,12 @@ public class ControllerExceptionHandler {
     return ResponseEntity.status(err.getStatus()).body(err);
   }
 
-  @ExceptionHandler(MapEnumException.class)
-  public ResponseEntity<StandardError> dataIntegrity(MapEnumException e, HttpServletRequest request) {
-    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(),
-          LocalDateTime.now(), request.getRequestURI());
-    return ResponseEntity.status(err.getStatus()).body(err);
-  }
+    @ExceptionHandler(MapEnumException.class)
+    public ResponseEntity<StandardError> dataIntegrity(MapEnumException e, HttpServletRequest request) {
+      StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(),
+            LocalDateTime.now(), request.getRequestURI());
+      return ResponseEntity.status(err.getStatus()).body(err);
+    }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
@@ -102,6 +101,15 @@ public class ControllerExceptionHandler {
 
     return ResponseEntity.status(err.getStatus()).body(err);
 
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<StandardError> validation(ConstraintViolationException e, HttpServletRequest request) {
+    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: " +
+          e.getCause().getMessage(),
+          LocalDateTime.now(), request.getRequestURI());
+
+    return ResponseEntity.status(err.getStatus()).body(err);
   }
 
   @ExceptionHandler(IllegalStateException.class)

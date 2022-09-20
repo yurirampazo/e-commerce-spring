@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
-  Optional<Cliente> findClienteByCpfCnpjContainingIgnoreCase(String cpfCnpj);
+  @Transactional(readOnly = true)
+  Cliente findClienteByCpfCnpjContainingIgnoreCase(String cpfCnpj);
 
   @Transactional(readOnly = true)  //Para consultas não é envolvida como transação de banco de dados. Fica mais rápida
-  Optional<Cliente> findClienteByEmailContainingIgnoreCase(String email);
+  Cliente findClienteByEmailContainingIgnoreCase(String email);
 }

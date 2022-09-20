@@ -1,8 +1,6 @@
 package br.com.dominio.projetoecommerce.model.dto;
 
 import br.com.dominio.projetoecommerce.exception.MapToModelException;
-import br.com.dominio.projetoecommerce.model.Cidade;
-import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.Endereco;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -20,7 +18,7 @@ public class EnderecoDto {
   private String complemento;
   private String bairro;
   private String cep;
-  private ClienteDto cliente;
+  private NewClienteDto cliente;
   private CidadeDto cidade;
 
   public void setId(Integer id) {
@@ -47,7 +45,7 @@ public class EnderecoDto {
     this.cep = cep;
   }
 
-  public void setCliente(ClienteDto cliente) {
+  public void setCliente(NewClienteDto cliente) {
     this.cliente = cliente;
   }
 
