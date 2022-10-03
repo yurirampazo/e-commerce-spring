@@ -29,6 +29,7 @@ public class PedidoMapper {
     dto.setClienteNome(model.getClienteNome());
     dto.setInstante(model.getInstante());
     dto.setItens(model.getItens());
+    dto.setValorTotal(model.getValorTotal());
     return dto;
   }
 }

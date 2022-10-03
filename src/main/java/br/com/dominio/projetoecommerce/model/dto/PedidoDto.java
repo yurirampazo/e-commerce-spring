@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class PedidoDto implements Serializable {
   private PagamentoDto pagamento;
   private EnderecoDto enderecoDeEntrega;
   private Set<ItemPedido> itens = new HashSet<>();
+  private BigDecimal valorTotal;
 
   public Integer getId() {
     return id;
@@ -71,5 +73,13 @@ public class PedidoDto implements Serializable {
 
   public void setItens(Set<ItemPedido> itens) {
     this.itens = itens;
+  }
+
+  public BigDecimal getValorTotal() {
+    return valorTotal;
+  }
+
+  public void setValorTotal(BigDecimal valorTotal) {
+    this.valorTotal = valorTotal;
   }
 }

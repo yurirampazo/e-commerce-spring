@@ -68,7 +68,7 @@ public class ItemPedido implements Serializable {
     this.preco = BigDecimal.valueOf(preco);
   }
 
-  public BigDecimal getSubtotatl() {
+  public BigDecimal getSubtotal() {
     return (preco.subtract(desconto)).multiply(BigDecimal.valueOf(quantidade));
   }
 

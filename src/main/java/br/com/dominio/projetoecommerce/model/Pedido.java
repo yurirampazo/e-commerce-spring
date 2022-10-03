@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -66,6 +67,7 @@ public class Pedido implements Serializable {
   public void setId(Integer id) {
     this.id = id;
   }
+
   public void setPagamento(Pagamento pagamento) {
     this.pagamento = pagamento;
   }
@@ -81,6 +83,15 @@ public class Pedido implements Serializable {
   public void addItens(ItemPedido itemPedido) {
     itens.add(itemPedido);
   }
+
+  public BigDecimal getValorTotal() {
+    BigDecimal soma = BigDecimal.valueOf(0.0);
+    for (ItemPedido ip : itens) {
+      soma = soma.add(ip.getSubtotal());
+    }
+    return soma;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
