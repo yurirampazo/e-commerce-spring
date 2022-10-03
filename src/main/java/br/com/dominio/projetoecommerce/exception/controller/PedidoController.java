@@ -40,9 +40,9 @@ public class PedidoController {
   }
 
   @PostMapping
-  public ResponseEntity<Pedido> postPedido(@Valid @RequestBody Pedido pedido) {
-    pedidoService.postPedido(pedido);
-    return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+  public ResponseEntity<PedidoDto> postPedido(@Valid @RequestBody Pedido pedido) {
+    PedidoDto dto = pedidoService.postPedido(pedido);
+    return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }
 
   @PutMapping("/{id}")

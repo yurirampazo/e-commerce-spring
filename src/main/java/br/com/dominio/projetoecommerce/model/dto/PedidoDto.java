@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.model.dto;
 
+import br.com.dominio.projetoecommerce.model.ItemPedido;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -20,6 +23,7 @@ public class PedidoDto implements Serializable {
   private LocalDateTime instante;
   private PagamentoDto pagamento;
   private EnderecoDto enderecoDeEntrega;
+  private Set<ItemPedido> itens = new HashSet<>();
 
   public Integer getId() {
     return id;
@@ -59,5 +63,13 @@ public class PedidoDto implements Serializable {
 
   public void setEnderecoDeEntrega(EnderecoDto enderecoDeEntrega) {
     this.enderecoDeEntrega = enderecoDeEntrega;
+  }
+
+  public Set<ItemPedido> getItens() {
+    return itens;
+  }
+
+  public void setItens(Set<ItemPedido> itens) {
+    this.itens = itens;
   }
 }

@@ -19,6 +19,8 @@ import java.util.Objects;
 @Table(name = "item_pedido")
 public class ItemPedido implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+
   @EmbeddedId
   private ItemPedidoPK id = new ItemPedidoPK();
 
@@ -64,6 +66,10 @@ public class ItemPedido implements Serializable {
 
   public void setPreco(Double preco) {
     this.preco = BigDecimal.valueOf(preco);
+  }
+
+  public BigDecimal getSubtotatl() {
+    return (preco.subtract(desconto)).multiply(BigDecimal.valueOf(quantidade));
   }
 
   @Override

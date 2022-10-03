@@ -30,12 +30,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class Produto implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-//  @NotNull
-//  @NotBlank
   @Size(max = 255)
   private String nome;
 

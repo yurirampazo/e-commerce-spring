@@ -5,6 +5,7 @@ import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
+import br.com.dominio.projetoecommerce.model.ItemPedido;
 import br.com.dominio.projetoecommerce.model.Pedido;
 import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.EmptyStackException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class PedidoService {
@@ -37,14 +40,13 @@ public class PedidoService {
   public PedidoDto findPedidoById(Integer id) {
     return PedidoMapper.toDto(pedidoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
-//    return pedidoRepository.findById(id).orElse(null);
   }
 
-  public Pedido postPedido(Pedido pedido) {
+  public PedidoDto postPedido(Pedido pedido) {
     boolean exists = pedidoRepository.findById(pedido.getId()).isPresent();
 
     if (!exists) {
-      return pedidoRepository.save(pedido);
+      return PedidoMapper.toDto(pedidoRepository.save(pedido));
     } else {
       throw new PostNotAllowedException("Pedido duplicado!");
     }
@@ -56,7 +58,6 @@ public class PedidoService {
     pedido.setCliente(pedidoAlterado.getCliente());
     pedido.setPagamento(pedidoAlterado.getPagamento());
     pedido.setEnderecoDeEntrega(pedidoAlterado.getEnderecoDeEntrega());
-
     pedidoRepository.save(pedido);
   }
 
@@ -68,6 +69,4 @@ public class PedidoService {
       throw new DataIntegrityException();
     }
   }
-
-
 }

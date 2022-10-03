@@ -28,8 +28,7 @@ public class PedidoMapper {
     dto.setEnderecoDeEntrega(EnderecoMapper.toDto(model.getEnderecoDeEntrega()));
     dto.setClienteNome(model.getClienteNome());
     dto.setInstante(model.getInstante());
-//    dto.setItens(model.getItens());
-    //Adicionar items, problema é: Estão contidos na chave primária da tabela ManyToMany
+    dto.setItens(model.getItens());
     return dto;
   }
 }

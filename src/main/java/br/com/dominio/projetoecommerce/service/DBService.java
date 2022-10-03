@@ -60,6 +60,9 @@ public class DBService {
   @Autowired
   private ItemPedidoRepository itemPedidoRepository;
 
+  @Autowired
+  private PedidoService pedidoService;
+
     public void insanciarBancoTeste() {
       Categoria cat1 = new Categoria(null, "Informatica");
       Categoria cat2 = new Categoria(null, "Escritório");
