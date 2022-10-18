@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @NoArgsConstructor
-@Getter
 @Entity
 @Table(name = "item_pedido")
 public class ItemPedido implements Serializable {
@@ -48,12 +47,20 @@ public class ItemPedido implements Serializable {
   }
 
   @JsonIgnore
-  Produto getProduto() {
+  public Produto getProduto() {
     return id.getProduto();
   }
 
   public void setId(ItemPedidoPK id) {
     this.id = id;
+  }
+
+  public void setPedido(Pedido pedido) {
+    id.setPedido(pedido);
+  }
+
+  public void setProduto(Produto produto) {
+    this.id.setProduto(produto);
   }
 
   public void setDesconto(Double desconto) {

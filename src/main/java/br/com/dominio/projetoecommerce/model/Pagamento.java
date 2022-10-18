@@ -5,6 +5,7 @@ import br.com.dominio.projetoecommerce.exception.MapToDtoException;
 import br.com.dominio.projetoecommerce.model.dto.PagamentoDto;
 import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -23,7 +24,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "pagamento")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pagamento implements Serializable {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+public class Pagamento implements Serializable {
 
   private static final long serialVersionUID = 1L;
   

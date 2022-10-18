@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.io.BigDecimalParser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -79,6 +80,10 @@ public class Produto implements Serializable {
 
   public void setPreco(BigDecimal preco) {
     this.preco = preco;
+  }
+
+  public Double getPreco() {
+    return preco.doubleValue();
   }
 
   public void addCategoria(Categoria categoria) {

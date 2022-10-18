@@ -2,8 +2,6 @@ package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
-import br.com.dominio.projetoecommerce.exception.MapToDtoException;
-import br.com.dominio.projetoecommerce.exception.MapToModelException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.mapper.ProdutoMapper;
@@ -19,9 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.EmptyStackException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -32,12 +30,15 @@ public class ProdutoService {
   @Autowired
   private CategoriaRepository categoriaRepository;
 
+  @Autowired
+  private ProdutoMapper produtoMapper;
+
   public Page<ProdutoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage,
           Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Produto> list = produtoRepository.findAll(pageRequest);
     try {
-      return list.map(ProdutoMapper::toDto);
+      return list.map(produtoMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
@@ -49,14 +50,14 @@ public class ProdutoService {
     List<Categoria> categorias = categoriaRepository.findAllById(ids);
     Page<Produto> list = produtoRepository.search(nome, categorias, pageRequest);
     try {
-      return list.map(ProdutoMapper::toDto);
+      return list.map(produtoMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public ProdutoDto findProdutoById(Integer id) {
-    return ProdutoMapper.toDto(produtoRepository.findById(id).orElseThrow(() ->
+    return produtoMapper.toDto(produtoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + " não encontrado!")));
   }
 
@@ -71,9 +72,9 @@ public class ProdutoService {
   }
 
   public void putProduto(Produto produtoAlterado, Integer id) {
-    Produto produto = ProdutoMapper.toModel(findProdutoById(id));
+    Produto produto = produtoMapper.toModel(findProdutoById(id));
     produtoAlterado.getCategorias().forEach(produto::addCategoria);
-    produto.setPreco(produtoAlterado.getPreco());
+    produto.setPreco(BigDecimal.valueOf(produtoAlterado.getPreco()));
     produtoRepository.save(produto);
   }
 

@@ -31,36 +31,39 @@ public class ClienteService {
   @Autowired
   private EnderecoRepository enderecoRepository;
 
+  @Autowired
+  private ClienteMapper clienteMapper;
+
   public List<NewClienteDto> findAll() {
-    return clienteRepository.findAll().stream().map(ClienteMapper::toDto).collect(Collectors.toList());
+    return clienteRepository.findAll().stream().map(clienteMapper::newClienteDto).collect(Collectors.toList());
   }
 
   public Page<NewClienteDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Cliente> list = clienteRepository.findAll(pageRequest);
     try {
-      return list.map(ClienteMapper::toDto);
+      return list.map(clienteMapper::newClienteDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public NewClienteDto findClienteById(Integer id) {
-    return ClienteMapper.toDto(clienteRepository.findById(id).orElseThrow(() ->
+    return clienteMapper.newClienteDto(clienteRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException(id)));
   }
 
   public NewClienteDto findByCpfCnpj(String cpfCnpj) {
-      return ClienteMapper.toDto(clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cpfCnpj));
+      return clienteMapper.newClienteDto(clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cpfCnpj));
   }
 
   public NewClienteDto findByEmail(String email) {
-    return ClienteMapper.toDto(clienteRepository.findClienteByEmailContainingIgnoreCase(email));
+    return clienteMapper.newClienteDto(clienteRepository.findClienteByEmailContainingIgnoreCase(email));
   }
 
   @Transactional
   public NewClienteDto postCliente(NewClienteDto cliente) {
-    Cliente c1 = clienteRepository.save(ClienteMapper.toModel(cliente));
+    Cliente c1 = clienteRepository.save(clienteMapper.fromNewClientToDto(cliente));
     for (Endereco x : cliente.getEnderecos()) {
       x.setCliente(c1);
     }

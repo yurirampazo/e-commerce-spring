@@ -1,13 +1,16 @@
 package br.com.dominio.projetoecommerce.service;
 
+import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
-import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
-import br.com.dominio.projetoecommerce.model.ItemPedido;
+import br.com.dominio.projetoecommerce.model.Pagamento;
+import br.com.dominio.projetoecommerce.model.PagamentoComBoleto;
+import br.com.dominio.projetoecommerce.model.PagamentoComCartao;
 import br.com.dominio.projetoecommerce.model.Pedido;
 import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
+import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,8 +20,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.EmptyStackException;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class PedidoService {
@@ -26,30 +27,61 @@ public class PedidoService {
   @Autowired
   private PedidoRepository pedidoRepository;
 
+  @Autowired
+  private PagamentoService pagamentoService;
+
+  @Autowired
+  private ProdutoService produtoService;
+
+  @Autowired
+  private ItemPedidoRepository itemPedidoRepository;
+
+  @Autowired
+  private PedidoMapper pedidoMapper;
+
   public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Pedido> list = pedidoRepository.findAll(pageRequest);
     try {
-      return list.map(PedidoMapper::toDto);
+      return list.map(pedidoMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public PedidoDto findPedidoById(Integer id) {
-    return PedidoMapper.toDto(pedidoRepository.findById(id).orElseThrow(() ->
+    return pedidoMapper.toDto(pedidoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
   }
 
   public PedidoDto postPedido(Pedido pedido) {
-    boolean exists = pedidoRepository.findById(pedido.getId()).isPresent();
-
-    if (!exists) {
-      return PedidoMapper.toDto(pedidoRepository.save(pedido));
+    Pagamento pagamento;
+    if (pedido.getPagamento() instanceof PagamentoComBoleto) {
+      PagamentoComBoleto pagto = (PagamentoComBoleto) pedido.getPagamento();
+      pagto.setDataVencimento(pedido.getInstante().plusWeeks(1L));
+      pagto.setEstadoPagamento(EstadoPagamento.PENDENTE);
+      pagto.setPedido(pedido);
+      pedido.setPagamento(pagto);
+      pagamento = pagto;
     } else {
-      throw new PostNotAllowedException("Pedido duplicado!");
+      PagamentoComCartao pagto = (PagamentoComCartao)  pedido.getPagamento();
+      pagto.setNumeroDeparcelas(((PagamentoComCartao) pedido.getPagamento()).getNumeroDeparcelas());
+      pagto.setEstadoPagamento(EstadoPagamento.PENDENTE);
+      pagto.setPedido(pedido);
+      pedido.setPagamento(pagto);
+      pagamento = pagto;
     }
+
+    pagamentoService.postPagamaneto(pagamento);
+    pedido = pedidoRepository.save(pedido);
+    pedido.getItens().forEach(x -> {
+      x.setDesconto(0.0);
+      x.setPreco(produtoService.findProdutoById(x.getProduto().getId()).getPreco().doubleValue());
+    });
+
+    itemPedidoRepository.saveAll(pedido.getItens());
+    return pedidoMapper.toDto(pedidoRepository.save(pedido));
   }
 
   public void putPedido(Integer id, Pedido pedidoAlterado) {

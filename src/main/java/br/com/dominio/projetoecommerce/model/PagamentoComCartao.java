@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.model;
 
 import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +15,9 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "pagamento_com_cartao")
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
-  @NotNull
   private Integer numeroDeparcelas;
 
   public PagamentoComCartao(Integer id, EstadoPagamento estadoPagamento, Pedido pedido, Integer numeroDeparcelas) {

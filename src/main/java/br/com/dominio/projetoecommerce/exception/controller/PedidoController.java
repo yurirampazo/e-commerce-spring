@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.exception.controller;
 
+import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.model.Pedido;
 import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.service.PedidoService;
@@ -40,7 +41,7 @@ public class PedidoController {
   }
 
   @PostMapping
-  public ResponseEntity<PedidoDto> postPedido(@Valid @RequestBody Pedido pedido) {
+  public ResponseEntity<PedidoDto> postPedido(@RequestBody Pedido pedido) {
     PedidoDto dto = pedidoService.postPedido(pedido);
     return ResponseEntity.status(HttpStatus.CREATED).body(dto);
   }

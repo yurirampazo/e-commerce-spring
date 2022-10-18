@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,6 +42,7 @@ public class Pedido implements Serializable {
   private final LocalDateTime instante = LocalDateTime.now();
 
   @JsonIgnore
+  @JsonProperty("pagamento")
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
   private Pagamento pagamento;
 

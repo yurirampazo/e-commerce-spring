@@ -19,7 +19,7 @@ import java.util.Set;
 public class PedidoDto implements Serializable {
 
   private Integer id;
-  private String clienteNome;
+//  private String clienteNome;
   @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDateTime instante;
   private PagamentoDto pagamento;
@@ -35,13 +35,13 @@ public class PedidoDto implements Serializable {
     this.id = id;
   }
 
-  public String getClienteNome() {
-    return clienteNome;
-  }
+//  public String getClienteNome() {
+//    return clienteNome;
+//  }
 
-  public void setClienteNome(String clienteNome) {
-    this.clienteNome = clienteNome;
-  }
+//  public void setClienteNome(String clienteNome) {
+//    this.clienteNome = clienteNome;
+//  }
 
   public LocalDateTime getInstante() {
     return instante;

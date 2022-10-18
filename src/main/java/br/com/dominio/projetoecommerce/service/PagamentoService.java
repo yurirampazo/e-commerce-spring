@@ -30,13 +30,7 @@ public class PagamentoService {
   }
 
   public Pagamento postPagamaneto(Pagamento pagamento) {
-    boolean exists = pagamentoRepository.findById(pagamento.getId()).isPresent();
-
-    if (!exists) {
-      return pagamentoRepository.save(pagamento);
-    } else {
-      throw new PostNotAllowedException("Pagamento duplicado!");
-    }
+    return pagamentoRepository.save(pagamento);
   }
 
   public void putPagamento(Pagamento pagamentoAlterado, Integer id) {

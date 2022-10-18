@@ -23,19 +23,21 @@ public class CategoriaService {
   @Autowired
   private CategoriaRepository categoriaRepository;
 
+  @Autowired
+  private CategoriaMapper categoriaMapper;
 
   public Page<CategoriaDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     try {
       Page<Categoria> list = categoriaRepository.findAll(pageRequest);
-      return list.map(CategoriaMapper::toDto);
+      return list.map(categoriaMapper::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public CategoriaDto findCategoriaById(Integer id) {
-    return CategoriaMapper.toDto(categoriaRepository.findById(id).orElseThrow(() -> new
+    return categoriaMapper.toDto(categoriaRepository.findById(id).orElseThrow(() -> new
           IdNotFoundException(id)));
   }
 
@@ -50,7 +52,7 @@ public class CategoriaService {
   }
 
   public void putCategoria(Categoria categoriaAlterada, Integer id) {
-    Categoria categoria = CategoriaMapper.toModel(findCategoriaById(id));
+    Categoria categoria = categoriaMapper.toModel(findCategoriaById(id));
     categoria.setNome(categoriaAlterada.getNome());
     categoriaRepository.save(categoria);
   }

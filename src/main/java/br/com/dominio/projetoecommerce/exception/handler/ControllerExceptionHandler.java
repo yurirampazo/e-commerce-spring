@@ -60,12 +60,12 @@ public class ControllerExceptionHandler {
     return ResponseEntity.status(err.getStatus()).body(err);
   }
 
-  @ExceptionHandler(MapToDtoException.class)
-  public ResponseEntity<StandardError> dataIntegrity(MapToDtoException e, HttpServletRequest request) {
-    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(),
-          LocalDateTime.now(), request.getRequestURI());
-    return ResponseEntity.status(err.getStatus()).body(err);
-  }
+//  @ExceptionHandler(MapToDtoException.class)
+//  public ResponseEntity<StandardError> dataIntegrity(MapToDtoException e, HttpServletRequest request) {
+//    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(),
+//          LocalDateTime.now(), request.getRequestURI());
+//    return ResponseEntity.status(err.getStatus()).body(err);
+//  }
 
   @ExceptionHandler(MapToModelException.class)
   public ResponseEntity<StandardError> dataIntegrity(MapToModelException e, HttpServletRequest request) {
@@ -103,14 +103,14 @@ public class ControllerExceptionHandler {
 
   }
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<StandardError> validation(ConstraintViolationException e, HttpServletRequest request) {
-    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: " +
-          e.getCause().getMessage(),
-          LocalDateTime.now(), request.getRequestURI());
-
-    return ResponseEntity.status(err.getStatus()).body(err);
-  }
+//  @ExceptionHandler(ConstraintViolationException.class)
+//  public ResponseEntity<StandardError> validation(ConstraintViolationException e, HttpServletRequest request) {
+//    StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Erro de validação: " +
+//          e.getCause().getMessage(),
+//          LocalDateTime.now(), request.getRequestURI());
+//
+//    return ResponseEntity.status(err.getStatus()).body(err);
+//  }
 
   @ExceptionHandler(IllegalStateException.class)
   public ResponseEntity<StandardError> validation(IllegalStateException e, HttpServletRequest request) {
