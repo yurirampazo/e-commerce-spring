@@ -1,2 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar
-target/projeto-ecommerce-0.0.1-SNAPSHOT.jar
+web: java -jar target/projeto-ecommerce.jar --server.port=$PORT
