@@ -15,8 +15,8 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11.0.13</java.version>
-        <maven.compiler.source>3.6.2</maven.compiler.source>
-        <maven.compiler.target>3.6.2</maven.compiler.target>
+        <maven.compiler.source>3.8.3</maven.compiler.source>
+        <maven.compiler.target>3.8.3</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -100,8 +100,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>3.6.2</source>
-                    <target>3.6.2</target>
+                    <source>3.8.3</source>
+                    <target>3.8.3</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>

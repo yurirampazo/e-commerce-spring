@@ -1,6 +1,29 @@
-#server:
-# port: 8081
-
 spring:
-  profiles:
-    active: prod
+  profiles.active: "${APP_PROFILE:test}"
+#Aumentando tamanho máximo de upload de arquivos do spring
+  servlet.multipart:
+    max-file-size: "10MB"
+    max-request-size: "10MB"
+
+default:
+  sender: "${EMAIL_SENDER:vazio}"
+  recipient: "${EMAIL_RECIPIENT:vazio}"
+
+#Valores padrão para segredo e tempo de expiração
+jwt:
+  secret: "${JWT_SCRET:vazio}"
+  expiration: "${JWT_EXPIRATION:86400}"
+
+#Informações AWS
+aws:
+  access_key_id: "${AWS_KEY:vazio}"
+  secret_access_key: "${AWS_SECRET:vazio}"
+
+s3:
+  bucket: "api-spring-ionic"
+#Código de região
+  region: "sa-east-1"
+
+img:
+  prefix.client.profile: "cp"
+  profile.size: "200"

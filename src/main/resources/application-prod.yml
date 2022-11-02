@@ -1,10 +1,22 @@
 spring:
+  mail:
+    host: "smtp.gmail.com"
+    username: "${EMAIL_USERNAME:vazio}"
+    password: "${EMAIL_PASSWORD:vazio}"
+    properties.mail.smtp:
+      auth: "true"
+      socketFactory:
+        port: "465"
+        class: "javax.net.ssl.SSLSocketFactory"
+        fallback: "false"
+      starttls.enable: "true"
+      ssl.enable: "true"
+
   datasource:
-    url: "postgres://twegsirbywxyqn:00a9169144267573bad9ba6ad08ec9a7689
-    ecd6f1cb51967de966f884414ea4b@ec2-3-220-207-90.compute-1.amazonaws.com:5432/dadf91jfrhjg1"
+    url: "${DATABASE_URL}"
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: "none"
     jpa:
-      show-sql: false
-      properties.hibernate.formatsql: false
+      show-sql: "false"
+      properties.hibernate.formatsql: "false"
