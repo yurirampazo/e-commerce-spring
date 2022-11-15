@@ -3,16 +3,21 @@ package br.com.dominio.projetoecommerce.enums;
 import br.com.dominio.projetoecommerce.exception.MapEnumException;
 
 public enum EstadoPagamento {
-  PENDENTE (1),
-  QUITADO (2),
-  CANCELADO (3);
+  PENDENTE (1, "Pendente"),
+  QUITADO (2, "Quitado"),
+  CANCELADO (3, "Cancelado");
 
   private Integer estado;
+  private String descricao;
 
-  EstadoPagamento(Integer estado) {
+  EstadoPagamento(Integer estado, String descricao) {
     this.estado = estado;
+    this.descricao = descricao;
   }
 
+  public String getDescricao() {
+    return descricao;
+  }
   public Integer getEstado () {
     return estado;
   }

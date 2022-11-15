@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,23 +37,22 @@ public class Pedido implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private String clienteNome;
-
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private final LocalDateTime instante = LocalDateTime.now();
 
-  @JsonIgnore
+  @JsonIgnoreProperties("pedido")
   @JsonProperty("pagamento")
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
   private Pagamento pagamento;
 
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonIgnoreProperties("pedidos")
+  @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   @JoinColumn(name = "cliente")
   private Cliente cliente;
 
   @ManyToOne
   @JoinColumn(name = "endereco_De_entrega_id")
+  @JsonIgnoreProperties("pedidos")
   private Endereco enderecoDeEntrega;
 
   @JsonIgnore
@@ -63,7 +63,6 @@ public class Pedido implements Serializable {
     this.id = id;
     this.cliente = cliente;
     this.enderecoDeEntrega = enderecoDeEntrega;
-    this.clienteNome = cliente.getNome();
   }
 
   public void setId(Integer id) {
@@ -105,5 +104,24 @@ public class Pedido implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(id);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Pedido Número: ");
+    sb.append(getId());
+    sb.append(", Instante: ");
+    sb.append(getInstante());
+    sb.append(", Cliente: ");
+    sb.append(getCliente().getNome());
+    sb.append(", Situação Pagamento: ");
+    sb.append(getPagamento().getEstadoPagamento().getDescricao());
+    sb.append(", Detalhes: ");
+    getItens().forEach(x -> sb.append(x.toString()));
+    sb.append(", Valor Total: ");
+    sb.append(getValorTotal());
+    sb.append("\n");
+    return sb.toString();
   }
 }

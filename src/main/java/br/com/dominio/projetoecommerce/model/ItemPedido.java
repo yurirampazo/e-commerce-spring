@@ -75,6 +75,14 @@ public class ItemPedido implements Serializable {
     this.preco = BigDecimal.valueOf(preco);
   }
 
+  public Integer getQuantidade() {
+    return quantidade;
+  }
+
+  public BigDecimal getPreco() {
+    return preco;
+  }
+
   public BigDecimal getSubtotal() {
     return (preco.subtract(desconto)).multiply(BigDecimal.valueOf(quantidade));
   }
@@ -90,5 +98,19 @@ public class ItemPedido implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(id);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(getProduto().getNome());
+    builder.append(", Quantidade: ");
+    builder.append(getQuantidade());
+    builder.append(", Preço Unitário: ");
+    builder.append(getPreco());
+    builder.append(", Subtotal: ");
+    builder.append(getSubtotal());
+    builder.append("/n");
+    return builder.toString();
   }
 }

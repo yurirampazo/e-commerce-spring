@@ -125,6 +125,7 @@ public class DBService {
       ped1.setPagamento(pag1);
       ped2.setPagamento(pag2);
 
+
       pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
       pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
 

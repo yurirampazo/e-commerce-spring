@@ -4,7 +4,10 @@ import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
+import br.com.dominio.projetoecommerce.mapper.ClienteMapper;
 import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
+import br.com.dominio.projetoecommerce.mapper.ProdutoMapper;
+import br.com.dominio.projetoecommerce.model.Cliente;
 import br.com.dominio.projetoecommerce.model.Pagamento;
 import br.com.dominio.projetoecommerce.model.PagamentoComBoleto;
 import br.com.dominio.projetoecommerce.model.PagamentoComCartao;
@@ -36,8 +39,14 @@ public class PedidoService {
   @Autowired
   private ItemPedidoRepository itemPedidoRepository;
 
+  @Autowired private ClienteService clienteService;
+
   @Autowired
   private PedidoMapper pedidoMapper;
+
+  @Autowired private ClienteMapper clienteMapper;
+
+  @Autowired private ProdutoMapper produtoMapper;
 
   public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
@@ -66,18 +75,26 @@ public class PedidoService {
       pagamento = pagto;
     } else {
       PagamentoComCartao pagto = (PagamentoComCartao)  pedido.getPagamento();
+      if (((PagamentoComCartao) pedido.getPagamento()).getNumeroDeparcelas() != null) {
       pagto.setNumeroDeparcelas(((PagamentoComCartao) pedido.getPagamento()).getNumeroDeparcelas());
+      } else {
+        pagto.setNumeroDeparcelas(3);
+      }
       pagto.setEstadoPagamento(EstadoPagamento.PENDENTE);
       pagto.setPedido(pedido);
       pedido.setPagamento(pagto);
       pagamento = pagto;
     }
 
+    Cliente cli = clienteMapper.fromNewClientToDto(clienteService.findClienteById(pedido.getCliente().getId()));
+    pedido.setCliente(cli);
+
     pagamentoService.postPagamaneto(pagamento);
     pedido = pedidoRepository.save(pedido);
     pedido.getItens().forEach(x -> {
       x.setDesconto(0.0);
       x.setPreco(produtoService.findProdutoById(x.getProduto().getId()).getPreco().doubleValue());
+      x.setProduto(produtoMapper.toModel(produtoService.findProdutoById(x.getProduto().getId())));
     });
 
     itemPedidoRepository.saveAll(pedido.getItens());
