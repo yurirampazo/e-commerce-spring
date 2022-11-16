@@ -48,6 +48,8 @@ public class PedidoService {
 
   @Autowired private ProdutoMapper produtoMapper;
 
+  @Autowired private EmailService emailService;
+
   public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
@@ -98,6 +100,7 @@ public class PedidoService {
     });
 
     itemPedidoRepository.saveAll(pedido.getItens());
+    emailService.sendOrderConfirmationEmail(pedido);
     return pedidoMapper.toDto(pedidoRepository.save(pedido));
   }
 

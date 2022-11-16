@@ -1,6 +1,8 @@
 package br.com.dominio.projetoecommerce.conf;
 
 import br.com.dominio.projetoecommerce.service.DBService;
+import br.com.dominio.projetoecommerce.service.EmailService;
+import br.com.dominio.projetoecommerce.service.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,5 +28,10 @@ public class DevConfig {
 
     dbService.insanciarBancoTeste();
     return true;
+  }
+
+  @Bean
+  public EmailService emailService() {
+    return new MockEmailService();
   }
 }
