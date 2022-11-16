@@ -11,13 +11,14 @@ spring:
     database-platform: "org.hibernate.dialect.MySQL8Dialect"
   mail:
     host: "smtp.gmail.com"
-    username: "${email_username:teste}"
-    password: "${email_password:teste}"
+    username: "teste@gmail.com"
+    password: "senhagerada"
+#    Usando TLS, se fosse usar SSL seria com a porta 465
+    port: 587
     properties.mail.smtp:
       auth: "true"
-      socketFactory:
-        port: "465"
-        class: "javax.net.ssl.SSLSocketFactory"
-        fallback: "false"
       starttls.enable: "true"
-      ssl.enable: "true"
+      starttls.required: "true"
+      writetimeout: "5000"
+      timeout: "5000"
+      connectiontimeout: "5000"

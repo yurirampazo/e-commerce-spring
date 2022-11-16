@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+
 public class SMTPEmailService extends AbstractEmailService {
 
   private static final Logger LOG = LoggerFactory.getLogger(SMTPEmailService.class);
@@ -15,8 +18,13 @@ public class SMTPEmailService extends AbstractEmailService {
 
   @Override
   public void sendEmail(SimpleMailMessage msg) {
-    LOG.info("Simulando envio de email...");
-    mailSender.send(msg);
-    LOG.info("Email enviado!");
+    try {
+      LOG.info("Enviando email...");
+      mailSender.send(msg);
+      LOG.info("Email enviado!");
+    } catch (Exception e) {
+      LOG.info("E-mail não enviado! \nMotivo: " + e.getCause().getMessage());
+      e.getMessage();
+    }
   }
 }
