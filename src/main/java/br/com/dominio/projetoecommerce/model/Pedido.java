@@ -111,15 +111,18 @@ public class Pedido implements Serializable {
     StringBuilder sb = new StringBuilder();
     sb.append("Pedido Número: ");
     sb.append(getId());
-    sb.append(", Instante: ");
-    sb.append(getInstante());
-    sb.append(", Cliente: ");
+    sb.append("\nInstante: ");
+    String instant = getInstante().toString()
+          .replaceAll("(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)T(\\d\\d):(\\d\\d):(\\d\\d).\\d+",
+                "Data: $3/$2/$1\nHorário: $4:$5:$6h");
+    sb.append("\n"+instant);
+    sb.append("\nCliente: ");
     sb.append(getCliente().getNome());
-    sb.append(", Situação Pagamento: ");
+    sb.append("\nSituação Pagamento: ");
     sb.append(getPagamento().getEstadoPagamento().getDescricao());
-    sb.append(", Detalhes: ");
+    sb.append("\nDetalhes: ");
     getItens().forEach(x -> sb.append(x.toString()));
-    sb.append(", Valor Total: ");
+    sb.append("\nValor Total: ");
     sb.append(getValorTotal());
     sb.append("\n");
     return sb.toString();

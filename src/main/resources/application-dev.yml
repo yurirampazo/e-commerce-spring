@@ -11,8 +11,9 @@ spring:
     database-platform: "org.hibernate.dialect.MySQL8Dialect"
   mail:
     host: "smtp.gmail.com"
-    username: "teste@gmail.com"
-    password: "senhagerada"
+#    Preencher login com valores válidos para envio de acordo com padrões estabelecidos
+    username: "teste"
+    password: "teste"
 #    Usando TLS, se fosse usar SSL seria com a porta 465
     port: 587
     properties.mail.smtp:
