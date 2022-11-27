@@ -114,8 +114,10 @@ public class DBService {
       clienteRepository.saveAll(Arrays.asList(cli1, cli2));
       enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
-      Pedido ped1 = new Pedido(null, cli1, e1);
-      Pedido ped2 = new Pedido(null, cli2, e3);
+      Pedido ped1 = new Pedido(null, new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
+            "24860711050", TipoCliente.PESSOAFISICA), e1);
+      Pedido ped2 = new Pedido(null, new Cliente(null, "Silva Marcos", "marcos.silva@gmail.com",
+            "98813277091", TipoCliente.PESSOAFISICA), e3);
 
       Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
       Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,

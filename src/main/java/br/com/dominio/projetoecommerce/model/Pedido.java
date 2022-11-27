@@ -113,7 +113,7 @@ public class Pedido implements Serializable {
     sb.append(getId());
     sb.append("\nInstante: ");
     String instant = getInstante().toString()
-          .replaceAll("(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)T(\\d\\d):(\\d\\d):(\\d\\d).\\d+",
+          .replaceAll("(\\d\\d\\d\\d)[\\-|\\/](\\d\\d)[\\-|\\/](\\d\\d)T(\\d\\d):(\\d\\d):(\\d\\d).\\d+",
                 "Data: $3/$2/$1\nHorário: $4:$5:$6h");
     sb.append("\n"+instant);
     sb.append("\nCliente: ");
