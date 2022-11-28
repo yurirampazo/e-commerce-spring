@@ -1,5 +1,6 @@
 package br.com.dominio.projetoecommerce.service;
 
+import br.com.dominio.projetoecommerce.enums.Perfil;
 import br.com.dominio.projetoecommerce.model.Categoria;
 import br.com.dominio.projetoecommerce.model.Cidade;
 import br.com.dominio.projetoecommerce.model.Cliente;
@@ -103,6 +104,11 @@ public class DBService {
             "98813277091", TipoCliente.PESSOAFISICA, encoder.encode("123 "));
       cli2.getTelefones().addAll(Arrays.asList("27363325", "93838395"));
 
+      Cliente cli3 = new Cliente(null, "Yuri Rampazo", "yuri_rampazo@gmail.com",
+            "66419708095", TipoCliente.PESSOAFISICA, encoder.encode("123 "));
+      cli2.getTelefones().addAll(Arrays.asList("27363325", "93838395"));
+      cli3.addPerfil(Perfil.ADMIN);
+
       Endereco e1 = new Endereco(null, "Rua Flores", "300",
             "Apto 303", "Jardim", "38220834", cli1, c1);
 
@@ -113,8 +119,9 @@ public class DBService {
             "N/A", "Centro", "38777013", cli2, c2);
 
       cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+      cli3.getEnderecos().add(e2);
 
-      clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+      clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
       enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
       Pedido ped1 = new Pedido(null, new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
