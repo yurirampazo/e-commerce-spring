@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
   @Autowired
   private Environment environment;
@@ -33,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/categorias/**"
   };
 
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
     if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
       http.headers().frameOptions().disable();
@@ -45,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .antMatchers(PUBLIC_MATCHERS).permitAll()
           .anyRequest().authenticated();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    return http.build();
   }
 
   @Bean
