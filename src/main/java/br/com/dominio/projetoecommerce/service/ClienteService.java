@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,9 @@ public class ClienteService {
 
   @Autowired
   private ClienteMapper clienteMapper;
+
+  @Autowired
+  private BCryptPasswordEncoder encoder;
 
   public List<NewClienteDto> findAll() {
     return clienteRepository.findAll().stream().map(clienteMapper::newClienteDto).collect(Collectors.toList());
@@ -63,6 +67,7 @@ public class ClienteService {
 
   @Transactional
   public NewClienteDto postCliente(NewClienteDto cliente) {
+    cliente.setSenha(encoder.encode(cliente.getSenha()));
     Cliente c1 = clienteRepository.save(clienteMapper.fromNewClientToDto(cliente));
     for (Endereco x : cliente.getEnderecos()) {
       x.setCliente(c1);

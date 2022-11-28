@@ -39,6 +39,9 @@ public class NewClienteDto implements Serializable {
   @NotNull
   private Integer tipo;
 
+  @NotNull
+  private String senha;
+
   @NotEmpty
   private List<Endereco> enderecos = new ArrayList<>();
 
@@ -75,6 +78,14 @@ public class NewClienteDto implements Serializable {
 
   public void setTipo(TipoCliente tipo) {
     this.tipo = tipo.getTipo();
+  }
+
+  public String getSenha() {
+    return senha;
+  }
+
+  public void setSenha(String senha) {
+    this.senha = senha;
   }
 
   public Set<String> getTelefones() {

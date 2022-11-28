@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.model;
 
 
 import br.com.dominio.projetoecommerce.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
 
@@ -41,6 +42,8 @@ public class Cliente implements Serializable {
   private String cpfCnpj;
   private Integer tipo;
 
+  private String senha;
+
   @JsonIgnoreProperties("cliente")
   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
   private List<Endereco> enderecos = new ArrayList<>();
@@ -58,6 +61,15 @@ public class Cliente implements Serializable {
     this.email = email;
     this.cpfCnpj = cpfCnpj;
     this.tipo = tipo.getTipo();
+  }
+
+  public Cliente(Integer id, String nome, String email, String cpfCnpj, TipoCliente tipo, String senha) {
+    this.id = id;
+    this.nome = nome;
+    this.email = email;
+    this.cpfCnpj = cpfCnpj;
+    this.tipo = tipo.getTipo();
+    this.senha = senha;
   }
 
   public Integer getId() {
@@ -110,6 +122,15 @@ public class Cliente implements Serializable {
 
   public void setTipo(TipoCliente tipo) {
     this.tipo = tipo.getTipo();
+  }
+
+  @JsonIgnore
+  public String getSenha() {
+    return senha;
+  }
+
+  public void setSenha(String senha) {
+    this.senha = senha;
   }
 
   public void addEndereco(Endereco endereco) {

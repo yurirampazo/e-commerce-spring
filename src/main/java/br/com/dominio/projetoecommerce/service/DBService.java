@@ -23,6 +23,7 @@ import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
 import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
 import br.com.dominio.projetoecommerce.enums.TipoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -63,6 +64,8 @@ public class DBService {
   @Autowired
   private PedidoService pedidoService;
 
+  @Autowired private BCryptPasswordEncoder encoder;
+
     public void insanciarBancoTeste() {
       Categoria cat1 = new Categoria(null, "Informatica");
       Categoria cat2 = new Categoria(null, "Escritório");
@@ -93,11 +96,11 @@ public class DBService {
       cidadeRepository.saveAll(Arrays.asList(c1, c2));
 
       Cliente cli1 = new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
-            "24860711050", TipoCliente.PESSOAFISICA);
+            "24860711050", TipoCliente.PESSOAFISICA, encoder.encode("321"));
       cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
       Cliente cli2 = new Cliente(null, "Silva Marcos", "marcos.silva@gmail.com",
-            "98813277091", TipoCliente.PESSOAFISICA);
+            "98813277091", TipoCliente.PESSOAFISICA, encoder.encode("123 "));
       cli2.getTelefones().addAll(Arrays.asList("27363325", "93838395"));
 
       Endereco e1 = new Endereco(null, "Rua Flores", "300",
