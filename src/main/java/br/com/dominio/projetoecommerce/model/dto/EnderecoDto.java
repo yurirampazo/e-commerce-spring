@@ -1,8 +1,5 @@
 package br.com.dominio.projetoecommerce.model.dto;
 
-import br.com.dominio.projetoecommerce.exception.MapToModelException;
-import br.com.dominio.projetoecommerce.mapper.CidadeMapper;
-import br.com.dominio.projetoecommerce.model.Endereco;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -40,14 +40,6 @@ public class PedidoService {
   private ItemPedidoRepository itemPedidoRepository;
 
   @Autowired private ClienteService clienteService;
-
-  @Autowired
-  private PedidoMapper pedidoMapper;
-
-  @Autowired private ClienteMapper clienteMapper;
-
-  @Autowired private ProdutoMapper produtoMapper;
-
   @Autowired private EmailService emailService;
 
   public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
@@ -55,14 +47,14 @@ public class PedidoService {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Pedido> list = pedidoRepository.findAll(pageRequest);
     try {
-      return list.map(pedidoMapper::toDto);
+      return list.map(PedidoMapper.INSTANCE::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public PedidoDto findPedidoById(Integer id) {
-    return pedidoMapper.toDto(pedidoRepository.findById(id).orElseThrow(() ->
+    return PedidoMapper.INSTANCE.toDto(pedidoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
   }
 
@@ -88,7 +80,7 @@ public class PedidoService {
       pagamento = pagto;
     }
 
-    Cliente cli = clienteMapper.fromNewClientToDto(clienteService.findClienteById(pedido.getCliente().getId()));
+    Cliente cli = ClienteMapper.INSTANCE.fromNewClientToDto(clienteService.findClienteById(pedido.getCliente().getId()));
     pedido.setCliente(cli);
 
     pagamentoService.postPagamaneto(pagamento);
@@ -96,12 +88,12 @@ public class PedidoService {
     pedido.getItens().forEach(x -> {
       x.setDesconto(0.0);
       x.setPreco(produtoService.findProdutoById(x.getProduto().getId()).getPreco().doubleValue());
-      x.setProduto(produtoMapper.toModel(produtoService.findProdutoById(x.getProduto().getId())));
+      x.setProduto(ProdutoMapper.INSTANCE.toModel(produtoService.findProdutoById(x.getProduto().getId())));
     });
 
     itemPedidoRepository.saveAll(pedido.getItens());
     emailService.sendOrderConfirmationEmail(pedido);
-    return pedidoMapper.toDto(pedidoRepository.save(pedido));
+    return PedidoMapper.INSTANCE.toDto(pedidoRepository.save(pedido));
   }
 
   public void putPedido(Integer id, Pedido pedidoAlterado) {

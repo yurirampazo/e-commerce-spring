@@ -30,15 +30,12 @@ public class ProdutoService {
   @Autowired
   private CategoriaRepository categoriaRepository;
 
-  @Autowired
-  private ProdutoMapper produtoMapper;
-
   public Page<ProdutoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage,
           Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Produto> list = produtoRepository.findAll(pageRequest);
     try {
-      return list.map(produtoMapper::toDto);
+      return list.map(ProdutoMapper.INSTANCE::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
@@ -50,14 +47,14 @@ public class ProdutoService {
     List<Categoria> categorias = categoriaRepository.findAllById(ids);
     Page<Produto> list = produtoRepository.search(nome, categorias, pageRequest);
     try {
-      return list.map(produtoMapper::toDto);
+      return list.map(ProdutoMapper.INSTANCE::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
   public ProdutoDto findProdutoById(Integer id) {
-    return produtoMapper.toDto(produtoRepository.findById(id).orElseThrow(() ->
+    return ProdutoMapper.INSTANCE.toDto(produtoRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException("Id: " + id + " não encontrado!")));
   }
 
@@ -72,7 +69,7 @@ public class ProdutoService {
   }
 
   public void putProduto(Produto produtoAlterado, Integer id) {
-    Produto produto = produtoMapper.toModel(findProdutoById(id));
+    Produto produto = ProdutoMapper.INSTANCE.toModel(findProdutoById(id));
     produtoAlterado.getCategorias().forEach(produto::addCategoria);
     produto.setPreco(BigDecimal.valueOf(produtoAlterado.getPreco()));
     produtoRepository.save(produto);
