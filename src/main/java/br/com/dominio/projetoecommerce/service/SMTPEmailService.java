@@ -6,9 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
-
 public class SMTPEmailService extends AbstractEmailService {
 
   private static final Logger LOG = LoggerFactory.getLogger(SMTPEmailService.class);

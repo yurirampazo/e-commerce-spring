@@ -1,7 +1,7 @@
 package br.com.dominio.projetoecommerce.conf;
 
-import br.com.dominio.projetoecommerce.model.PagamentoComBoleto;
-import br.com.dominio.projetoecommerce.model.PagamentoComCartao;
+import br.com.dominio.projetoecommerce.domain.PagamentoComBoleto;
+import br.com.dominio.projetoecommerce.domain.PagamentoComCartao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

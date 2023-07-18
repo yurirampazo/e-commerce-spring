@@ -1,7 +1,7 @@
 package br.com.dominio.projetoecommerce.mapper;
 
-import br.com.dominio.projetoecommerce.model.Pagamento;
-import br.com.dominio.projetoecommerce.model.dto.PagamentoDto;
+import br.com.dominio.projetoecommerce.domain.Pagamento;
+import br.com.dominio.projetoecommerce.domain.dto.PagamentoDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,7 +1,7 @@
 package br.com.dominio.projetoecommerce.mapper;
 
-import br.com.dominio.projetoecommerce.model.Categoria;
-import br.com.dominio.projetoecommerce.model.dto.CategoriaDto;
+import br.com.dominio.projetoecommerce.domain.Categoria;
+import br.com.dominio.projetoecommerce.domain.dto.CategoriaDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

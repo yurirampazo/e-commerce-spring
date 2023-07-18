@@ -1,18 +1,18 @@
 package br.com.dominio.projetoecommerce.service;
 
-import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
+import br.com.dominio.projetoecommerce.domain.enums.EstadoPagamento;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.mapper.ClienteMapper;
 import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.mapper.ProdutoMapper;
-import br.com.dominio.projetoecommerce.model.Cliente;
-import br.com.dominio.projetoecommerce.model.Pagamento;
-import br.com.dominio.projetoecommerce.model.PagamentoComBoleto;
-import br.com.dominio.projetoecommerce.model.PagamentoComCartao;
-import br.com.dominio.projetoecommerce.model.Pedido;
-import br.com.dominio.projetoecommerce.model.dto.PedidoDto;
+import br.com.dominio.projetoecommerce.domain.Cliente;
+import br.com.dominio.projetoecommerce.domain.Pagamento;
+import br.com.dominio.projetoecommerce.domain.PagamentoComBoleto;
+import br.com.dominio.projetoecommerce.domain.PagamentoComCartao;
+import br.com.dominio.projetoecommerce.domain.Pedido;
+import br.com.dominio.projetoecommerce.domain.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,9 @@
 package br.com.dominio.projetoecommerce.mapper;
 
-import br.com.dominio.projetoecommerce.model.Cliente;
-import br.com.dominio.projetoecommerce.model.dto.ClienteDto;
-import br.com.dominio.projetoecommerce.model.dto.NewClienteDto;
+import br.com.dominio.projetoecommerce.domain.Cliente;
+import br.com.dominio.projetoecommerce.domain.dto.ClienteDto;
+import br.com.dominio.projetoecommerce.domain.dto.NewClienteDto;
+import br.com.dominio.projetoecommerce.domain.enums.TipoCliente;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -13,5 +14,4 @@ public interface ClienteMapper {
   ClienteDto toDto(Cliente cliente);
   Cliente toModel(ClienteDto clienteDto);
   Cliente fromNewClientToDto(NewClienteDto newClienteDto);
-
 }

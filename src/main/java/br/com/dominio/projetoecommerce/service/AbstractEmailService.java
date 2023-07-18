@@ -1,11 +1,9 @@
 package br.com.dominio.projetoecommerce.service;
 
-import br.com.dominio.projetoecommerce.model.Pedido;
+import br.com.dominio.projetoecommerce.domain.Pedido;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public abstract class AbstractEmailService implements EmailService {

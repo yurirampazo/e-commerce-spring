@@ -1,16 +1,17 @@
 package br.com.dominio.projetoecommerce.service;
 
-import br.com.dominio.projetoecommerce.model.Categoria;
-import br.com.dominio.projetoecommerce.model.Cidade;
-import br.com.dominio.projetoecommerce.model.Cliente;
-import br.com.dominio.projetoecommerce.model.Endereco;
-import br.com.dominio.projetoecommerce.model.Estado;
-import br.com.dominio.projetoecommerce.model.ItemPedido;
-import br.com.dominio.projetoecommerce.model.Pagamento;
-import br.com.dominio.projetoecommerce.model.PagamentoComBoleto;
-import br.com.dominio.projetoecommerce.model.PagamentoComCartao;
-import br.com.dominio.projetoecommerce.model.Pedido;
-import br.com.dominio.projetoecommerce.model.Produto;
+import br.com.dominio.projetoecommerce.domain.Categoria;
+import br.com.dominio.projetoecommerce.domain.Cidade;
+import br.com.dominio.projetoecommerce.domain.Cliente;
+import br.com.dominio.projetoecommerce.domain.Endereco;
+import br.com.dominio.projetoecommerce.domain.Estado;
+import br.com.dominio.projetoecommerce.domain.ItemPedido;
+import br.com.dominio.projetoecommerce.domain.Pagamento;
+import br.com.dominio.projetoecommerce.domain.PagamentoComBoleto;
+import br.com.dominio.projetoecommerce.domain.PagamentoComCartao;
+import br.com.dominio.projetoecommerce.domain.Pedido;
+import br.com.dominio.projetoecommerce.domain.Produto;
+import br.com.dominio.projetoecommerce.domain.enums.AppRole;
 import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
 import br.com.dominio.projetoecommerce.repository.CidadeRepository;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
@@ -20,15 +21,18 @@ import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
 import br.com.dominio.projetoecommerce.repository.PagamentoRepository;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
 import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
-import br.com.dominio.projetoecommerce.enums.EstadoPagamento;
-import br.com.dominio.projetoecommerce.enums.TipoCliente;
+import br.com.dominio.projetoecommerce.domain.enums.EstadoPagamento;
+import br.com.dominio.projetoecommerce.domain.enums.TipoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class DBService {
@@ -63,6 +67,9 @@ public class DBService {
   @Autowired
   private PedidoService pedidoService;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
     public void insanciarBancoTeste() {
       Categoria cat1 = new Categoria(null, "Informatica");
       Categoria cat2 = new Categoria(null, "Escritório");
@@ -92,12 +99,13 @@ public class DBService {
       estadoRepository.saveAll(Arrays.asList(est1, est2));
       cidadeRepository.saveAll(Arrays.asList(c1, c2));
 
-      Cliente cli1 = new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
-            "24860711050", TipoCliente.PESSOAFISICA);
+      Cliente cli1 = new Cliente(null, "Maria Silva", "maria.silva2@gmail.com",
+            "24860711050", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123456"));
       cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+      cli1.addRole(AppRole.ADMIN);
 
-      Cliente cli2 = new Cliente(null, "Silva Marcos", "marcos.silva@gmail.com",
-            "98813277091", TipoCliente.PESSOAFISICA);
+      Cliente cli2 = new Cliente(null, "Silva Marcos", "marcos.silva2@gmail.com",
+            "98813277091", TipoCliente.PESSOAFISICA, passwordEncoder.encode("654321"));
       cli2.getTelefones().addAll(Arrays.asList("27363325", "93838395"));
 
       Endereco e1 = new Endereco(null, "Rua Flores", "300",
@@ -111,13 +119,22 @@ public class DBService {
 
       cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-      clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+      Cliente cli3 = Cliente.builder()
+                  .id(null).nome("Yuri Rampazo")
+                  .email("yuri.email@gmail.com")
+            .cpfCnpj("08728441028").senha(passwordEncoder.encode("123"))
+            .roles(Set.of(AppRole.ADMIN, AppRole.USER))
+            .tipo(TipoCliente.PESSOAFISICA.getTipo())
+            .telefones(Set.of("11 999999997","11 999999998", "11 999999999"))
+            .build();
+
+      clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
       enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
       Pedido ped1 = new Pedido(null, new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
-            "24860711050", TipoCliente.PESSOAFISICA), e1);
+            "24860711050", TipoCliente.PESSOAFISICA, passwordEncoder.encode("qwerty")), e1);
       Pedido ped2 = new Pedido(null, new Cliente(null, "Silva Marcos", "marcos.silva@gmail.com",
-            "98813277091", TipoCliente.PESSOAFISICA), e3);
+            "98813277091", TipoCliente.PESSOAFISICA, passwordEncoder.encode("asdfg")), e3);
 
       Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
       Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,

@@ -1,7 +1,7 @@
 package br.com.dominio.projetoecommerce.repository;
 
-import br.com.dominio.projetoecommerce.model.Categoria;
-import br.com.dominio.projetoecommerce.model.Produto;
+import br.com.dominio.projetoecommerce.domain.Categoria;
+import br.com.dominio.projetoecommerce.domain.Produto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
