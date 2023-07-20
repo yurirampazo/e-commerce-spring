@@ -1,22 +1,22 @@
 package br.com.dominio.projetoecommerce.service;
 
-import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
-import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.domain.Pagamento;
 import br.com.dominio.projetoecommerce.domain.PagamentoComBoleto;
 import br.com.dominio.projetoecommerce.domain.PagamentoComCartao;
+import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
+import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.repository.PagamentoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PagamentoService {
 
-  @Autowired
-  private PagamentoRepository pagamentoRepository;
+  private final PagamentoRepository pagamentoRepository;
 
   public List<Pagamento> findAllPagamentos() {
     return pagamentoRepository.findAll();

@@ -2,23 +2,25 @@ package br.com.dominio.projetoecommerce.conf;
 
 import br.com.dominio.projetoecommerce.service.DBService;
 import br.com.dominio.projetoecommerce.service.EmailService;
-import br.com.dominio.projetoecommerce.service.MockEmailService;
 import br.com.dominio.projetoecommerce.service.SMTPEmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.mail.MailSender;
 
 @Configuration
+@RequiredArgsConstructor
 @Profile("dev")
 public class DevConfig {
 
-  @Autowired
-  private DBService dbService;
+  private final DBService dbService;
+  private final MailSender mailSender;
+
 
   @Value("${spring.jpa.hibernate.ddl-auto}")
-  private String strategy;
+  private final String strategy;
 
   @Bean
   public boolean instanciarBancodeDados() {
@@ -32,6 +34,6 @@ public class DevConfig {
   }
   @Bean
   public EmailService emailService() {
-    return new SMTPEmailService();
+    return new SMTPEmailService(mailSender);
   }
 }

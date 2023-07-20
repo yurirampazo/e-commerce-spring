@@ -10,8 +10,8 @@ import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.mapper.ProdutoMapper;
 import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,25 +23,15 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PedidoService {
 
-  @Autowired
-  private PedidoRepository pedidoRepository;
-
-  @Autowired
-  private PagamentoService pagamentoService;
-
-  @Autowired
-  private ProdutoService produtoService;
-
-  @Autowired
-  private ItemPedidoRepository itemPedidoRepository;
-
-  @Autowired
-  private ClienteService clienteService;
-  @Autowired
-  private EmailService emailService;
-
+  private final PedidoRepository pedidoRepository;
+  private final PagamentoService pagamentoService;
+  private final ProdutoService produtoService;
+  private final ItemPedidoRepository itemPedidoRepository;
+  private final ClienteService clienteService;
+  private final EmailService emailService;
   public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);

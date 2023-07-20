@@ -1,16 +1,16 @@
 package br.com.dominio.projetoecommerce.service;
 
+import br.com.dominio.projetoecommerce.domain.Categoria;
+import br.com.dominio.projetoecommerce.domain.Produto;
+import br.com.dominio.projetoecommerce.domain.dto.ProdutoDto;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.mapper.ProdutoMapper;
-import br.com.dominio.projetoecommerce.domain.Categoria;
-import br.com.dominio.projetoecommerce.domain.Produto;
-import br.com.dominio.projetoecommerce.domain.dto.ProdutoDto;
 import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
 import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +22,11 @@ import java.util.EmptyStackException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProdutoService {
 
-  @Autowired
-  private ProdutoRepository produtoRepository;
-
-  @Autowired
-  private CategoriaRepository categoriaRepository;
+  private final ProdutoRepository produtoRepository;
+  private final CategoriaRepository categoriaRepository;
 
   public Page<ProdutoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage,

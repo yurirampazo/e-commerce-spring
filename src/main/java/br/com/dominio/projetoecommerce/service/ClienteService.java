@@ -12,8 +12,8 @@ import br.com.dominio.projetoecommerce.mapper.EnderecoMapper;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
 import br.com.dominio.projetoecommerce.repository.EnderecoRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,16 +27,12 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ClienteService {
 
-  @Autowired
-  private PasswordEncoder encoder;
-
-  @Autowired
-  private ClienteRepository clienteRepository;
-
-  @Autowired
-  private EnderecoRepository enderecoRepository;
+  private final PasswordEncoder encoder;
+  private final ClienteRepository clienteRepository;
+  private final EnderecoRepository enderecoRepository;
 
   public Page<ClienteDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);

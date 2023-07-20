@@ -1,14 +1,14 @@
 package br.com.dominio.projetoecommerce.service;
 
+import br.com.dominio.projetoecommerce.domain.Categoria;
+import br.com.dominio.projetoecommerce.domain.dto.CategoriaDto;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PostNotAllowedException;
 import br.com.dominio.projetoecommerce.mapper.CategoriaMapper;
-import br.com.dominio.projetoecommerce.domain.Categoria;
-import br.com.dominio.projetoecommerce.domain.dto.CategoriaDto;
 import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +18,9 @@ import org.springframework.stereotype.Service;
 import java.util.EmptyStackException;
 
 @Service
+@RequiredArgsConstructor
 public class CategoriaService {
-
-  @Autowired
-  private CategoriaRepository categoriaRepository;
+  private final CategoriaRepository categoriaRepository;
 
   public Page<CategoriaDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);

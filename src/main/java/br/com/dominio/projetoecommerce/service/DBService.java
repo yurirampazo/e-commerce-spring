@@ -1,29 +1,11 @@
 package br.com.dominio.projetoecommerce.service;
 
-import br.com.dominio.projetoecommerce.domain.Categoria;
-import br.com.dominio.projetoecommerce.domain.Cidade;
-import br.com.dominio.projetoecommerce.domain.Cliente;
-import br.com.dominio.projetoecommerce.domain.Endereco;
-import br.com.dominio.projetoecommerce.domain.Estado;
-import br.com.dominio.projetoecommerce.domain.ItemPedido;
-import br.com.dominio.projetoecommerce.domain.Pagamento;
-import br.com.dominio.projetoecommerce.domain.PagamentoComBoleto;
-import br.com.dominio.projetoecommerce.domain.PagamentoComCartao;
-import br.com.dominio.projetoecommerce.domain.Pedido;
-import br.com.dominio.projetoecommerce.domain.Produto;
+import br.com.dominio.projetoecommerce.domain.*;
 import br.com.dominio.projetoecommerce.domain.enums.AppRole;
-import br.com.dominio.projetoecommerce.repository.CategoriaRepository;
-import br.com.dominio.projetoecommerce.repository.CidadeRepository;
-import br.com.dominio.projetoecommerce.repository.ClienteRepository;
-import br.com.dominio.projetoecommerce.repository.EnderecoRepository;
-import br.com.dominio.projetoecommerce.repository.EstadoRepository;
-import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
-import br.com.dominio.projetoecommerce.repository.PagamentoRepository;
-import br.com.dominio.projetoecommerce.repository.PedidoRepository;
-import br.com.dominio.projetoecommerce.repository.ProdutoRepository;
 import br.com.dominio.projetoecommerce.domain.enums.EstadoPagamento;
 import br.com.dominio.projetoecommerce.domain.enums.TipoCliente;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.dominio.projetoecommerce.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,44 +13,22 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class DBService {
 
-  @Autowired
-  private CategoriaRepository categoriaRepository;
-
-  @Autowired
-  private ProdutoRepository produtoRepository;
-
-  @Autowired
-  private CidadeRepository cidadeRepository;
-
-  @Autowired
-  private EstadoRepository estadoRepository;
-
-  @Autowired
-  private ClienteRepository clienteRepository;
-
-  @Autowired
-  private EnderecoRepository enderecoRepository;
-
-  @Autowired
-  private PedidoRepository pedidoRepository;
-
-  @Autowired
-  private PagamentoRepository pagamentoRepository;
-
-  @Autowired
-  private ItemPedidoRepository itemPedidoRepository;
-
-  @Autowired
-  private PedidoService pedidoService;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final CategoriaRepository categoriaRepository;
+  private final ProdutoRepository produtoRepository;
+  private final CidadeRepository cidadeRepository;
+  private final EstadoRepository estadoRepository;
+  private final ClienteRepository clienteRepository;
+  private final EnderecoRepository enderecoRepository;
+  private final PedidoRepository pedidoRepository;
+  private final PagamentoRepository pagamentoRepository;
+  private final ItemPedidoRepository itemPedidoRepository;
+  private final PasswordEncoder passwordEncoder;
 
     public void insanciarBancoTeste() {
       Categoria cat1 = new Categoria(null, "Informatica");

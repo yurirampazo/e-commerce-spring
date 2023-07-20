@@ -1,6 +1,8 @@
 package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.domain.Pedido;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 

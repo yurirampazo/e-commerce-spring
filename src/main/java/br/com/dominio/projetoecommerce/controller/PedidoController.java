@@ -2,25 +2,22 @@ package br.com.dominio.projetoecommerce.controller;
 
 import br.com.dominio.projetoecommerce.domain.Pedido;
 import br.com.dominio.projetoecommerce.domain.dto.PedidoDto;
-import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.service.PedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
 @RestController
 @RequestMapping("/pedidos")
+@RequiredArgsConstructor
 public class PedidoController {
-
-  @Autowired
-  private PedidoService pedidoService;
+  private final PedidoService pedidoService;
 
   @GetMapping("/page")
   public ResponseEntity<Page<PedidoDto>> findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
