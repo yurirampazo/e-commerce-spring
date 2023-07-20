@@ -21,9 +21,8 @@ import java.util.Date;
 @Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-  private AuthenticationManager authenticationManager;
-
-  private JWTUtil jwtUtil;
+  private final AuthenticationManager authenticationManager;
+  private final JWTUtil jwtUtil;
 
   public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
     setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
@@ -42,9 +41,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       log.info("Password: {}", creds.getPassword());
 
       UsernamePasswordAuthenticationToken authToken =
-            new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>());
+            new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword());
 
-      return authenticationManager.authenticate(authToken);
+      log.info("Authentication Manager Trying to authenticate...");
+      Authentication auth = authenticationManager.authenticate(authToken);
+      log.info("Authentication Completed! Returned Token {}", auth);
+      return auth;
     }
     catch (IOException e) {
       throw new RuntimeException(e);

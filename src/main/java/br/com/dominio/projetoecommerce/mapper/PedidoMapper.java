@@ -7,8 +7,8 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface PedidoMapper {
+  PedidoMapper INSTANCE = Mappers.getMapper(PedidoMapper.class);
+  PedidoDto toDto(Pedido pedido);
 
- PedidoMapper INSTANCE = Mappers.getMapper(PedidoMapper.class);
- Pedido toModel(PedidoDto pedidoDto);
- PedidoDto toDto(Pedido pedido);
+  Pedido toModel(PedidoDto pedidoDto);
 }

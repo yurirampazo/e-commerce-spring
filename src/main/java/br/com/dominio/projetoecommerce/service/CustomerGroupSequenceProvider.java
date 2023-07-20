@@ -1,6 +1,7 @@
 package br.com.dominio.projetoecommerce.service;
 
 import br.com.dominio.projetoecommerce.domain.dto.NewClienteDto;
+import br.com.dominio.projetoecommerce.domain.enums.TipoCliente;
 import org.hibernate.validator.spi.group.DefaultGroupSequenceProvider;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class CustomerGroupSequenceProvider implements DefaultGroupSequenceProvid
     List<Class<?>> groups = new ArrayList<>();
     groups.add(NewClienteDto.class);
 
-    if (isCustomerValid(customer)) groups.add(customer.getTipo().getGroup());
+    if (isCustomerValid(customer)) groups.add(TipoCliente.toEnum(customer.getTipo()).getGroup());
     return groups;
   }
 

@@ -54,11 +54,10 @@ public class SecurityConfig {
                 headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
           .cors(x -> x.configurationSource(corsConfigurationSource()))
           .csrf(AbstractHttpConfigurer::disable)
-          .authorizeHttpRequests(auth -> {
+          .authorizeHttpRequests(auth ->
             auth.requestMatchers(PathRequest.toH2Console()).permitAll()
                   .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-                  .anyRequest().permitAll();
-          })
+                  .anyRequest().permitAll())
           .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .addFilter(new JWTAuthenticationFilter(authenticationManagerBean(), jwtUtil))
           .build();

@@ -3,7 +3,6 @@ package br.com.dominio.projetoecommerce.domain.dto;
 
 import br.com.dominio.projetoecommerce.domain.Endereco;
 import br.com.dominio.projetoecommerce.domain.enums.AppRole;
-import br.com.dominio.projetoecommerce.domain.enums.TipoCliente;
 import br.com.dominio.projetoecommerce.service.CnpjGroup;
 import br.com.dominio.projetoecommerce.service.CpfGroup;
 import br.com.dominio.projetoecommerce.service.CustomerGroupSequenceProvider;
@@ -52,7 +51,7 @@ public class NewClienteDto implements Serializable {
   private String cpfCnpj;
 
   @NotNull
-  private TipoCliente tipo;
+  private Integer tipo;
 
   @NotNull
   private String senha;
@@ -60,7 +59,7 @@ public class NewClienteDto implements Serializable {
   private List<String> roles = new ArrayList<>();
 
   @NotEmpty
-  private List<Endereco> enderecos = new ArrayList<>();
+  private List<EnderecoDto> enderecos = new ArrayList<>();
 
   @NotEmpty
   private Set<String> telefones = new HashSet<>();
@@ -89,12 +88,12 @@ public class NewClienteDto implements Serializable {
     this.cpfCnpj = cpfCnpj;
   }
 
-  public TipoCliente getTipo() {
+  public Integer getTipo() {
     return tipo;
   }
 
-  public void setTipo(String tipo) {
-    this.tipo = TipoCliente.valueOf(tipo);
+  public void setTipo(Integer tipo) {
+    this.tipo = tipo;
   }
 
   public Set<String> getTelefones() {
@@ -105,11 +104,11 @@ public class NewClienteDto implements Serializable {
     this.telefones = telefones;
   }
 
-  public List<Endereco> getEnderecos() {
+  public List<EnderecoDto> getEnderecos() {
     return enderecos;
   }
 
-  public void addEndereco(Endereco endereco) {
+  public void addEndereco(EnderecoDto endereco) {
     if (endereco != null) {
       boolean contains = this.getEnderecos().contains(endereco);
       if (!contains) {

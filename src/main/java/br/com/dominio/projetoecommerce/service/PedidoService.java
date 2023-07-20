@@ -1,20 +1,16 @@
 package br.com.dominio.projetoecommerce.service;
 
+import br.com.dominio.projetoecommerce.domain.*;
+import br.com.dominio.projetoecommerce.domain.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.domain.enums.EstadoPagamento;
 import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
-import br.com.dominio.projetoecommerce.mapper.ClienteMapper;
 import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.mapper.ProdutoMapper;
-import br.com.dominio.projetoecommerce.domain.Cliente;
-import br.com.dominio.projetoecommerce.domain.Pagamento;
-import br.com.dominio.projetoecommerce.domain.PagamentoComBoleto;
-import br.com.dominio.projetoecommerce.domain.PagamentoComCartao;
-import br.com.dominio.projetoecommerce.domain.Pedido;
-import br.com.dominio.projetoecommerce.domain.dto.PedidoDto;
 import br.com.dominio.projetoecommerce.repository.ItemPedidoRepository;
 import br.com.dominio.projetoecommerce.repository.PedidoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -23,8 +19,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.EmptyStackException;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class PedidoService {
 
   @Autowired
@@ -39,8 +37,10 @@ public class PedidoService {
   @Autowired
   private ItemPedidoRepository itemPedidoRepository;
 
-  @Autowired private ClienteService clienteService;
-  @Autowired private EmailService emailService;
+  @Autowired
+  private ClienteService clienteService;
+  @Autowired
+  private EmailService emailService;
 
   public Page<PedidoDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
@@ -54,13 +54,17 @@ public class PedidoService {
   }
 
   public PedidoDto findPedidoById(Integer id) {
-    return PedidoMapper.INSTANCE.toDto(pedidoRepository.findById(id).orElseThrow(() ->
-          new IdNotFoundException("Id: " + id + "do pedido não encontrado!")));
+    Optional<Pedido> pedido = pedidoRepository.findById(id);
+    if (pedido.isEmpty()) throw new IdNotFoundException();
+    return PedidoMapper.INSTANCE.toDto(pedido.get());
   }
 
-  public PedidoDto postPedido(Pedido pedido) {
+  public void postPedido(PedidoDto pedidoDto) {
+    log.info("Started posting order...");
+    Pedido pedido =  PedidoMapper.INSTANCE.toModel(pedidoDto);
     Pagamento pagamento;
     if (pedido.getPagamento() instanceof PagamentoComBoleto) {
+      log.info("Billet Payment!");
       PagamentoComBoleto pagto = (PagamentoComBoleto) pedido.getPagamento();
       pagto.setDataVencimento(pedido.getInstante().plusWeeks(1L));
       pagto.setEstadoPagamento(EstadoPagamento.PENDENTE);
@@ -68,9 +72,10 @@ public class PedidoService {
       pedido.setPagamento(pagto);
       pagamento = pagto;
     } else {
-      PagamentoComCartao pagto = (PagamentoComCartao)  pedido.getPagamento();
+      log.info("Card Payment!");
+      PagamentoComCartao pagto = (PagamentoComCartao) pedido.getPagamento();
       if (((PagamentoComCartao) pedido.getPagamento()).getNumeroDeparcelas() != null) {
-      pagto.setNumeroDeparcelas(((PagamentoComCartao) pedido.getPagamento()).getNumeroDeparcelas());
+        pagto.setNumeroDeparcelas(((PagamentoComCartao) pedido.getPagamento()).getNumeroDeparcelas());
       } else {
         pagto.setNumeroDeparcelas(3);
       }
@@ -80,8 +85,12 @@ public class PedidoService {
       pagamento = pagto;
     }
 
-    Cliente cli = ClienteMapper.INSTANCE.fromNewClientToDto(clienteService.findClienteById(pedido.getCliente().getId()));
-    pedido.setCliente(cli);
+    Optional<Cliente> cli = clienteService.findById(pedido.getCliente().getId());
+    if (cli.isEmpty()) {
+      throw new IdNotFoundException(pedido.getCliente().getId());
+    }
+    log.info("Setting client to order!");
+    pedido.setCliente(cli.get());
 
     pagamentoService.postPagamaneto(pagamento);
     pedido = pedidoRepository.save(pedido);
@@ -93,7 +102,7 @@ public class PedidoService {
 
     itemPedidoRepository.saveAll(pedido.getItens());
     emailService.sendOrderConfirmationEmail(pedido);
-    return PedidoMapper.INSTANCE.toDto(pedidoRepository.save(pedido));
+    log.info("Posted Order {}", pedido.getId());
   }
 
   public void putPedido(Integer id, Pedido pedidoAlterado) {

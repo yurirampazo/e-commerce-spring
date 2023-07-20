@@ -43,4 +43,15 @@ public enum TipoCliente {
     }
     throw new IllegalArgumentException("Id inválido: " + cod);
   }
+
+  Integer map(TipoCliente value) {
+    if (value == null) throw new MapEnumException();
+
+    for (TipoCliente x: TipoCliente.values()) {
+      if (x.getTipo().equals(value.getTipo())){
+        return value.getTipo();
+      }
+    }
+    throw new MapEnumException();
+  }
 }

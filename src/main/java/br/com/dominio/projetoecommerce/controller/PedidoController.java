@@ -2,6 +2,7 @@ package br.com.dominio.projetoecommerce.controller;
 
 import br.com.dominio.projetoecommerce.domain.Pedido;
 import br.com.dominio.projetoecommerce.domain.dto.PedidoDto;
+import br.com.dominio.projetoecommerce.mapper.PedidoMapper;
 import br.com.dominio.projetoecommerce.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -32,9 +36,11 @@ public class PedidoController {
   }
 
   @PostMapping
-  public ResponseEntity<PedidoDto> postPedido(@RequestBody Pedido pedido) {
-    PedidoDto dto = pedidoService.postPedido(pedido);
-    return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+  public ResponseEntity<Void> postPedido(@RequestBody PedidoDto pedido) {
+    pedidoService.postPedido(pedido);
+    URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/pedidos").toUriString());
+    return ResponseEntity.created(uri).build();
   }
 
   @PutMapping("/{id}")

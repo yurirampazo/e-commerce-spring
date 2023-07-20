@@ -49,7 +49,7 @@ public class Pedido implements Serializable {
   private Cliente cliente;
 
   @ManyToOne
-  @JoinColumn(name = "endereco_De_entrega_id")
+  @JoinColumn(name = "endereco_de_entrega_id")
   @JsonIgnoreProperties("pedidos")
   private Endereco enderecoDeEntrega;
 

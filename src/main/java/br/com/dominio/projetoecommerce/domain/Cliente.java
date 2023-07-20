@@ -3,6 +3,7 @@ package br.com.dominio.projetoecommerce.domain;
 
 import br.com.dominio.projetoecommerce.domain.enums.AppRole;
 import br.com.dominio.projetoecommerce.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -13,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "cliente")
@@ -34,6 +34,7 @@ public class Cliente implements Serializable {
   private String email;
   private String cpfCnpj;
   private Integer tipo;
+  @JsonIgnore
   private String senha;
 
  @ElementCollection(fetch = FetchType.EAGER)
@@ -56,7 +57,7 @@ public class Cliente implements Serializable {
     this.nome = nome;
     this.email = email;
     this.cpfCnpj = cpfCnpj;
-    this.tipo = tipo.getTipo();
+    this.tipo = (tipo==null) ? null : tipo.getTipo();
     this.senha = senha;
     roles.add(AppRole.USER);
   }
@@ -80,7 +81,6 @@ public class Cliente implements Serializable {
   public TipoCliente getTipo() {
     return TipoCliente.toEnum(tipo);
   }
-
   public List<Endereco> getEnderecos() {
     return enderecos;
   }

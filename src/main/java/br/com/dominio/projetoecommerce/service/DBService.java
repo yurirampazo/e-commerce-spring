@@ -124,16 +124,15 @@ public class DBService {
                   .email("yuri.email@gmail.com")
             .cpfCnpj("08728441028").senha(passwordEncoder.encode("123"))
             .roles(Set.of(AppRole.ADMIN, AppRole.USER))
-            .tipo(TipoCliente.PESSOAFISICA.getTipo())
             .telefones(Set.of("11 999999997","11 999999998", "11 999999999"))
             .build();
 
       clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
       enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
-      Pedido ped1 = new Pedido(null, new Cliente(null, "Maria Silva", "maria.silva@gmail.com",
+      Pedido ped1 = new Pedido(null, new Cliente(null, "Maria Silva", "maria2.silva@gmail.com",
             "24860711050", TipoCliente.PESSOAFISICA, passwordEncoder.encode("qwerty")), e1);
-      Pedido ped2 = new Pedido(null, new Cliente(null, "Silva Marcos", "marcos.silva@gmail.com",
+      Pedido ped2 = new Pedido(null, new Cliente(null, "Silva Marcos", "marcos2.silva@gmail.com",
             "98813277091", TipoCliente.PESSOAFISICA, passwordEncoder.encode("asdfg")), e3);
 
       Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);

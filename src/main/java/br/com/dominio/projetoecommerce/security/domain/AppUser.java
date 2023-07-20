@@ -25,7 +25,7 @@ public class AppUser implements UserDetails {
     this.email = email;
     this.password = password;
     this.authorities = perfis.stream().map(x ->
-          new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
+          new SimpleGrantedAuthority(x.getName())).toList();
   }
 
   public Integer getId() {

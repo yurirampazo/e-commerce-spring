@@ -8,9 +8,11 @@ import br.com.dominio.projetoecommerce.exception.DataIntegrityException;
 import br.com.dominio.projetoecommerce.exception.IdNotFoundException;
 import br.com.dominio.projetoecommerce.exception.PageNotFoundException;
 import br.com.dominio.projetoecommerce.mapper.ClienteMapper;
+import br.com.dominio.projetoecommerce.mapper.EnderecoMapper;
 import br.com.dominio.projetoecommerce.repository.ClienteRepository;
 import br.com.dominio.projetoecommerce.repository.EnderecoRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -20,8 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.EmptyStackException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class ClienteService {
 
   @Autowired
@@ -33,50 +38,56 @@ public class ClienteService {
   @Autowired
   private EnderecoRepository enderecoRepository;
 
-  public Page<NewClienteDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+  public Page<ClienteDto> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
     Page<Cliente> list = clienteRepository.findAll(pageRequest);
     try {
-      return list.map(ClienteMapper.INSTANCE::newClienteDto);
+      return list.map(ClienteMapper.INSTANCE::toDto);
     } catch (EmptyStackException | IndexOutOfBoundsException e) {
       throw new PageNotFoundException(page);
     }
   }
 
-  public NewClienteDto findClienteById(Integer id) {
-    return ClienteMapper.INSTANCE.newClienteDto(clienteRepository.findById(id).orElseThrow(() ->
+  public ClienteDto findClienteById(Integer id) {
+    return ClienteMapper.INSTANCE.toDto(clienteRepository.findById(id).orElseThrow(() ->
           new IdNotFoundException(id)));
   }
 
-  public NewClienteDto findByCpfCnpj(String cpfCnpj) {
-      return ClienteMapper.INSTANCE.newClienteDto(clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cpfCnpj));
+  public Cliente findByCpfCnpj(String cpfCnpj) {
+      return clienteRepository.findClienteByCpfCnpjContainingIgnoreCase(cpfCnpj);
   }
 
-  public NewClienteDto findByEmail(String email) {
-    return ClienteMapper.INSTANCE.newClienteDto(clienteRepository.findByEmail(email));
+  public Optional<Cliente> findById(Integer id) {
+    return clienteRepository.findById(id);
+  }
+
+  public ClienteDto findByEmail(String email) {
+    return ClienteMapper.INSTANCE.toDto(clienteRepository.findByEmail(email));
   }
 
   @Transactional
-  public NewClienteDto postCliente(NewClienteDto cliente) {
+  public void postCliente(NewClienteDto cliente) {
+    log.info("POST User Request: {}", cliente.getNome());
     cliente.setSenha(encoder.encode(cliente.getSenha()));
     Cliente c1 = clienteRepository.save(ClienteMapper.INSTANCE.fromNewClientToDto(cliente));
-    for (Endereco x : cliente.getEnderecos()) {
+    List<Endereco> enderecos = cliente.getEnderecos().stream().map(EnderecoMapper.INSTANCE::toModel).toList();
+    for (Endereco x : enderecos) {
       x.setCliente(c1);
     }
     enderecoRepository.saveAll(c1.getEnderecos());
-    return findByCpfCnpj(c1.getCpfCnpj());
+    log.info("Succefully Included user in database!");
   }
 
 
   public void putCliente(Integer id, ClienteDto clienteAlterado) {
+    log.info("Starting update user: {}", id);
     Cliente cliente = clienteRepository.findById(id)
           .orElseThrow(IdNotFoundException::new);
 
     cliente.setNome(clienteAlterado.getNome());
     cliente.setEmail(clienteAlterado.getEmail());
-    cliente.addTelefone(clienteAlterado.getTelefone());
-    cliente.addEndereco(clienteAlterado.getEndereco());
     clienteRepository.save(cliente);
+    log.info("Succefully updated user: {}", id);
   }
 
   public void deleteCliente(Integer id) {
